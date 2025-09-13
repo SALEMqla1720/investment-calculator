@@ -28,45 +28,50 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-/* --- Gaya Umum ---
-    Mengatur font, warna teks, dan latar belakang utama.
-*/
+/* Background utama */
 .stApp {
-    background-color: #f0f8ff; /* Latar belakang biru muda */
+    background-color: #f0f8ff; /* biru muda */
     padding-top: 1rem;
-    color: #333333;
-}
-p, span, div, a, li {
-    color: #333333 !important;
-    font-size: 1.05rem !important;
+    color: #222 !important;
 }
 
-/* --- Gaya Header ---
-    Menyesuaikan tampilan judul utama dan subheader.
-*/
+/* Font utama sedikit lebih kecil */
+p, span, div {
+    color: #222 !important;
+    font-size: 0.95rem !important;  
+    background-color: #ffffff !important; /* putih bersih di belakang teks */
+    padding: 2px 4px; 
+    border-radius: 3px; /* biar rapi */
+}
+
+/* Sidebar */
+.st-emotion-cache-16txte9 {
+    background-color: #ffffff;
+    font-size: 0.95rem !important;
+}
+
+/* Judul Utama */
 h1 {
     color: #1a437e;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 700;
     text-align: center;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 3px solid #1a437e;
-    font-size: 2rem !important;
+    font-size: 1.6rem !important;
+    background-color: #e6f0ff; /* biru muda lembut */
+    border-radius: 6px;
 }
+
+/* Subheader */
 h3 {
     color: #2c5ba3;
     font-weight: 600;
     border-bottom: 2px solid #2c5ba3;
-    padding-bottom: 5px;
-    font-size: 1.3rem !important;
-}
-
-/* --- Gaya Komponen ---
-    Menyesuaikan tampilan elemen interaktif seperti tombol dan input.
-*/
-/* Sidebar */
-.st-emotion-cache-16txte9 {
-    background-color: #ffffff;
+    padding-bottom: 4px;
+    font-size: 1.1rem !important;
+    background-color: #f0f8ff;
+    border-radius: 4px;
 }
 
 /* Tombol */
@@ -75,9 +80,9 @@ h3 {
     color: white !important;
     border-radius: 8px;
     font-weight: bold;
-    padding: 10px 20px;
+    padding: 8px 16px;
     transition: background-color 0.3s;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
 }
 .stButton > button:hover {
     background-color: #1a437e;
@@ -88,10 +93,7 @@ div[data-testid="stInfo"] {
     background-color: #e6f7ff;
     color: #0056b3 !important;
     border-left: 5px solid #0077c9;
-    font-size: 1rem !important;
-}
-div[data-testid="stInfo"] p {
-    color: #0056b3 !important; /* Memastikan teks di dalam p juga berwarna gelap */
+    font-size: 0.95rem !important;
 }
 
 /* Kotak Warning */
@@ -99,71 +101,58 @@ div[data-testid="stWarning"] {
     background-color: #fff8e1;
     color: #e65100 !important;
     border-left: 5px solid #ff9900;
-    font-size: 1rem !important;
-}
-div[data-testid="stWarning"] p {
-    color: #e65100 !important;
+    font-size: 0.95rem !important;
 }
 
 /* Dropdown & Multiselect */
-.st-emotion-cache-19p087t, .st-emotion-cache-1j0k816, .st-emotion-cache-1l092ci {
-    background-color: white !important;
-    color: black !important;
-    font-size: 1rem !important;
+.st-emotion-cache-19p087t.e1l4501a1, .st-emotion-cache-1j0k816.e1f1d6gn4 {
+    color: #222 !important;
+    font-size: 0.95rem !important;
+    background-color: #ffffff !important;
 }
-/* Menargetkan opsi dropdown */
-.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
-    background-color: white !important;
-    color: black !important;
-}
-.st-emotion-cache-1r65j0p div[role="listbox"], .st-emotion-cache-1r65j0p div[role="option"] {
-    background-color: white !important;
-    color: black !important;
+.st-emotion-cache-1r65j0p.e1l4501a1, .st-emotion-cache-10q2x7r {
+    background-color: #ffffff !important;
+    color: #000 !important;
 }
 
 /* Expander */
 .streamlit-expanderHeader {
     background-color: #e8f0f8;
-    color: #2c5ba3 !important;
+    color: #2c3e50 !important;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 1.05rem !important;
+    font-size: 0.95rem !important;
 }
 
 /* Chat Messages */
 .st-emotion-cache-1c7y2qn.ef3psqc12 {
     background-color: #d1e7dd;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 8px;
+    border-radius: 8px;
     color: black !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
 }
 .st-emotion-cache-w9v34c.ef3psqc10 {
     background-color: #e9ecef;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 8px;
+    border-radius: 8px;
     color: black !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
 }
 
-/* Menghilangkan menu dan footer bawaan */
-#MainMenu, footer {
-    visibility: hidden;
-}
-
-/* --- Lebar & Mobile Responsive ---
-    Memastikan tata letak proporsional di semua perangkat.
-*/
+/* Lebar konten utama */
 .st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .st-emotion-cache-1j0k816, div[data-testid="stVerticalBlock"] {
     max-width: 900px;
     margin: auto;
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
     .stApp {
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
         padding-top: 0.5rem;
     }
     div[data-testid="stVerticalBlock"] {
@@ -174,6 +163,7 @@ div[data-testid="stWarning"] p {
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ==================== Main Streamlit App ====================
 
@@ -567,6 +557,7 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+
 
 
 

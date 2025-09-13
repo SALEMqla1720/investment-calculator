@@ -29,20 +29,41 @@ st.set_page_config(
 # === CSS IN-LINE (DIsatukan ke dalam app.py) ===
 st.markdown("""
 <style>
-/* Mengubah warna background halaman dan memastikan warna teks default gelap */
+/* Mengatur font dasar dan warna teks untuk seluruh aplikasi */
 .stApp {
     background-color: #f0f2f6;
     padding-top: 1rem;
     color: #333333 !important;
+    font-size: 16px; /* Meningkatkan ukuran font dasar */
 }
-/* Menargetkan semua elemen p, span, dan div untuk memastikan warna teks gelap */
-p, span, div, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r {
+
+/* Memastikan semua elemen teks utama berwarna gelap dan mudah dibaca */
+p, span, div, h1, h2, h3, h4, h5, h6,
+.st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r,
+.st-emotion-cache-1a6x33v, .st-emotion-cache-19p087t {
     color: #333333 !important;
 }
+
+/* Mengatur ukuran font untuk input dan label */
+.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r {
+    font-size: 16px !important;
+}
+
+/* Perbaikan khusus untuk multiselect agar opsi terlihat */
+.st-emotion-cache-19p087t, .st-emotion-cache-1j0k816, .st-emotion-cache-1l092ci {
+    background-color: white !important;
+    color: black !important;
+}
+.st-emotion-cache-19p087t div[role="listbox"], .st-emotion-cache-19p087t div[role="option"] {
+    background-color: white !important;
+    color: black !important;
+}
+
 /* Mengubah warna sidebar */
 .st-emotion-cache-16txte9 {
     background-color: #ffffff;
 }
+
 /* Mengubah font & warna judul utama */
 h1 {
     color: #1a437e;
@@ -52,6 +73,7 @@ h1 {
     padding-bottom: 20px;
     border-bottom: 3px solid #1a437e;
 }
+
 /* Gaya untuk subheader */
 h3 {
     color: #2c5ba3;
@@ -59,6 +81,7 @@ h3 {
     border-bottom: 2px solid #2c5ba3;
     padding-bottom: 5px;
 }
+
 /* Gaya untuk tombol */
 .stButton > button {
     background-color: #2c5ba3;
@@ -72,37 +95,24 @@ h3 {
     background-color: #1a437e;
 }
 
-/* === PERBAIKAN KHUSUS UNTUK KOTAK INFO & DROPDOWN === */
-
-/* Gaya untuk kotak info */
+/* Gaya untuk kotak info (Tanya Jawab Investasi) */
 div[data-testid="stInfo"] {
     background-color: #e6f7ff;
-    color: #0056b3 !important; /* Warna teks yang kontras */
+    color: #0056b3 !important;
     border-left: 5px solid #0077c9;
 }
 div[data-testid="stInfo"] p {
-    color: #0056b3 !important; /* Memastikan teks di dalam p juga berwarna gelap */
+    color: #0056b3 !important;
 }
 
 /* Gaya untuk kotak warning */
 div[data-testid="stWarning"] {
     background-color: #fff8e1;
-    color: #e65100 !important; /* Warna teks yang kontras */
+    color: #e65100 !important;
     border-left: 5px solid #ff9900;
 }
 div[data-testid="stWarning"] p {
     color: #e65100 !important;
-}
-
-/* Memperbaiki warna teks di multiselect */
-.st-emotion-cache-19p087t.e1l4501a1, .st-emotion-cache-1j0k816.e1f1d6gn4 {
-    color: #333333 !important;
-}
-
-/* Memperbaiki warna teks di opsi dropdown (menu) */
-.st-emotion-cache-1r65j0p.e1l4501a1, .st-emotion-cache-10q2x7r {
-    background-color: white !important;
-    color: black !important;
 }
 
 /* Gaya untuk expander */
@@ -116,6 +126,7 @@ div[data-testid="stWarning"] p {
 #MainMenu, footer {
     visibility: hidden;
 }
+
 /* Gaya untuk chat messages */
 .st-emotion-cache-1c7y2qn.ef3psqc12 {
     background-color: #d1e7dd;
@@ -131,11 +142,7 @@ div[data-testid="stWarning"] p {
 }
 
 /* === PERBAIKAN LEBAR UTAMA === */
-.st-emotion-cache-uf99v8 {
-    max-width: 900px;
-    margin: auto;
-}
-.st-emotion-cache-1f03405 {
+.st-emotion-cache-uf99v8, .st-emotion-cache-1f03405 {
     max-width: 900px;
     margin: auto;
 }
@@ -158,13 +165,6 @@ div[data-testid="stVerticalBlock"] {
     }
     div[data-testid="stVerticalBlock"] {
         max-width: 100% !important;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-    .st-emotion-cache-16txte9 {
-        width: 100% !important;
-    }
-    .st-emotion-cache-1f03405.e1f1d6gn3 {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
     }
@@ -564,6 +564,7 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+
 
 
 

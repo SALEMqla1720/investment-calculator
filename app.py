@@ -30,17 +30,22 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* Mengatur font dasar dan warna teks untuk seluruh aplikasi */
-body, .stApp, .st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9 {
+body, .stApp, .st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .main {
     background-color: #f0f2f6 !important;
     color: #333333 !important;
-    font-size: 16px !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
 /* Memastikan semua elemen teks utama berwarna gelap dan mudah dibaca */
-p, span, div, li, h1, h2, h3, h4, h5, h6,
+p, span, div, li, a, h1, h2, h3, h4, h5, h6,
 .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1a6x33v, .st-emotion-cache-19p087t {
     color: #333333 !important;
     font-size: 16px !important; /* Memperbesar font pada elemen teks */
+}
+
+/* Memperbaiki warna teks di input dan label */
+div[data-testid="stTextInput"], div[data-testid="stNumberInput"], div[data-testid="stSelectbox"] {
+    color: #333333 !important;
 }
 
 /* Perbaikan khusus untuk multiselect agar opsi terlihat */
@@ -124,7 +129,7 @@ div[data-testid="stWarning"] {
 }
 
 /* === PERBAIKAN LEBAR UTAMA === */
-.st-emotion-cache-uf99v8, .st-emotion-cache-1f03405 {
+.st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .block-container.st-emotion-cache-1j0k816 {
     max-width: 900px !important;
     margin: auto !important;
 }

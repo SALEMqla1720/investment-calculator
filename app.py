@@ -26,134 +26,147 @@ st.set_page_config(
     page_icon="📈"
 )
 
-# === CSS IN-LINE (Disatukan ke dalam app.py) ===
+# === CSS IN-LINE (DIsatukan ke dalam app.py) ===
 st.markdown("""
 <style>
-/* Mengatur font dasar dan warna teks untuk seluruh aplikasi */
-body, .stApp, .st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .main {
-    background-color: #f0f2f6 !important;
-    color: #333333 !important;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-}
-
-/* Memastikan semua elemen teks utama berwarna gelap dan mudah dibaca */
-p, span, div, li, a, h1, h2, h3, h4, h5, h6,
-.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1a6x33v, .st-emotion-cache-19p087t {
-    color: #333333 !important;
-    font-size: 16px !important; /* Memperbesar font pada elemen teks */
-}
-
-/* Memperbaiki warna teks di input dan label */
-div[data-testid="stTextInput"], div[data-testid="stNumberInput"], div[data-testid="stSelectbox"] {
+/* Mengubah warna background halaman dan memastikan warna teks default gelap */
+.stApp {
+    background-color: #f0f2f6;
+    padding-top: 1rem;
     color: #333333 !important;
 }
-
-/* Perbaikan khusus untuk multiselect agar opsi terlihat */
-.st-emotion-cache-19p087t, .st-emotion-cache-1j0k816, .st-emotion-cache-1l092ci {
-    background-color: white !important;
-    color: black !important;
+/* Menargetkan semua elemen p, span, dan div untuk memastikan warna teks gelap */
+p, span, div, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r {
+    color: #333333 !important;
 }
-.st-emotion-cache-19p087t div[role="listbox"], .st-emotion-cache-19p087t div[role="option"] {
-    background-color: white !important;
-    color: black !important;
+/* Mengubah warna sidebar */
+.st-emotion-cache-16txte9 {
+    background-color: #ffffff;
 }
-
 /* Mengubah font & warna judul utama */
 h1 {
-    color: #1a437e !important;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    font-weight: 700 !important;
-    text-align: center !important;
-    padding-bottom: 20px !important;
-    border-bottom: 3px solid #1a437e !important;
+    color: #1a437e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #1a437e;
 }
-
 /* Gaya untuk subheader */
 h3 {
-    color: #2c5ba3 !important;
-    font-weight: 600 !important;
-    border-bottom: 2px solid #2c5ba3 !important;
-    padding-bottom: 5px !important;
+    color: #2c5ba3;
+    font-weight: 600;
+    border-bottom: 2px solid #2c5ba3;
+    padding-bottom: 5px;
 }
-
 /* Gaya untuk tombol */
 .stButton > button {
-    background-color: #2c5ba3 !important;
+    background-color: #2c5ba3;
     color: white !important;
-    border-radius: 8px !important;
-    font-weight: bold !important;
-    padding: 10px 20px !important;
-    transition: background-color 0.3s !important;
+    border-radius: 8px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
 }
 .stButton > button:hover {
-    background-color: #1a437e !important;
+    background-color: #1a437e;
 }
 
-/* Gaya untuk kotak info dan warning */
+/* === PERBAIKAN KHUSUS UNTUK KOTAK INFO & DROPDOWN === */
+
+/* Gaya untuk kotak info */
 div[data-testid="stInfo"] {
-    background-color: #e6f7ff !important;
-    color: #0056b3 !important;
-    border-left: 5px solid #0077c9 !important;
+    background-color: #e6f7ff;
+    color: #0056b3 !important; /* Warna teks yang kontras */
+    border-left: 5px solid #0077c9;
 }
+div[data-testid="stInfo"] p {
+    color: #0056b3 !important; /* Memastikan teks di dalam p juga berwarna gelap */
+}
+
+/* Gaya untuk kotak warning */
 div[data-testid="stWarning"] {
-    background-color: #fff8e1 !important;
+    background-color: #fff8e1;
+    color: #e65100 !important; /* Warna teks yang kontras */
+    border-left: 5px solid #ff9900;
+}
+div[data-testid="stWarning"] p {
     color: #e65100 !important;
-    border-left: 5px solid #ff9900 !important;
+}
+
+/* Memperbaiki warna teks di multiselect */
+.st-emotion-cache-19p087t.e1l4501a1, .st-emotion-cache-1j0k816.e1f1d6gn4 {
+    color: #333333 !important;
+}
+
+/* Memperbaiki warna teks di opsi dropdown (menu) */
+.st-emotion-cache-1r65j0p.e1l4501a1, .st-emotion-cache-10q2x7r {
+    background-color: white !important;
+    color: black !important;
 }
 
 /* Gaya untuk expander */
 .streamlit-expanderHeader {
-    background-color: #e8f0f8 !important;
+    background-color: #e8f0f8;
     color: #2c3e50 !important;
-    border-radius: 5px !important;
-    font-weight: bold !important;
+    border-radius: 5px;
+    font-weight: bold;
 }
-
 /* Menghilangkan menu hamburger dan footer "Made with Streamlit" */
 #MainMenu, footer {
-    visibility: hidden !important;
+    visibility: hidden;
 }
-
 /* Gaya untuk chat messages */
 .st-emotion-cache-1c7y2qn.ef3psqc12 {
-    background-color: #d1e7dd !important;
-    padding: 10px !important;
-    border-radius: 10px !important;
+    background-color: #d1e7dd;
+    padding: 10px;
+    border-radius: 10px;
     color: black !important;
 }
 .st-emotion-cache-w9v34c.ef3psqc10 {
-    background-color: #e9ecef !important;
-    padding: 10px !important;
-    border-radius: 10px !important;
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 10px;
     color: black !important;
 }
 
 /* === PERBAIKAN LEBAR UTAMA === */
-.st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .block-container.st-emotion-cache-1j0k816 {
-    max-width: 900px !important;
-    margin: auto !important;
+.st-emotion-cache-uf99v8 {
+    max-width: 900px;
+    margin: auto;
+}
+.st-emotion-cache-1f03405 {
+    max-width: 900px;
+    margin: auto;
 }
 .st-emotion-cache-1j0k816 {
     gap: 1rem !important;
 }
 div[data-testid="stVerticalBlock"] {
-    max-width: 900px !important;
-    margin: auto !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    max-width: 900px;
+    margin: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 /* Media Query untuk layar kecil (mobile) */
 @media (max-width: 768px) {
     .stApp {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        padding-top: 0.5rem !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 0.5rem;
     }
     div[data-testid="stVerticalBlock"] {
         max-width: 100% !important;
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .st-emotion-cache-16txte9 {
+        width: 100% !important;
+    }
+    .st-emotion-cache-1f03405.e1f1d6gn3 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
     }
 }
 </style>
@@ -551,3 +564,4 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+

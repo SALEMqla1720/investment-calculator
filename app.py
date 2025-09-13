@@ -100,17 +100,22 @@ div[data-testid="stWarning"] {
 div[data-testid="stWarning"] p {
     color: #e65100 !important;
 }
-/* Dropdown & Multiselect */
+
+/* --- Perbaikan KRUSIAL untuk Multiselect --- */
+/* Latar belakang dropdown saat terbuka */
 .st-emotion-cache-19p087t, .st-emotion-cache-1j0k816, .st-emotion-cache-1l092ci {
     background-color: white !important;
     color: black !important;
     font-size: 1rem !important;
 }
-/* Menargetkan opsi dropdown */
-.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
-    background-color: white !important;
+
+/* Teks Opsi pada dropdown (kunci perbaikan) */
+.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6, 
+.st-emotion-cache-19p087t div[role="option"] p, .st-emotion-cache-1r65j0p p {
     color: black !important;
 }
+
+
 /* Expander */
 .streamlit-expanderHeader {
     background-color: #e8f0f8 !important;

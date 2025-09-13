@@ -26,7 +26,7 @@ st.set_page_config(
     page_icon="📈"
 )
 
-# === CSS IN-LINE (DIsatukan ke dalam app.py) ===
+# === CSS IN-LINE (Disatukan ke dalam app.py) ===
 st.markdown("""
 <style>
 /* Mengatur font dasar dan warna teks untuk seluruh aplikasi */
@@ -158,6 +158,7 @@ div[data-testid="stVerticalBlock"] {
 }
 </style>
 """, unsafe_allow_html=True)
+
 # ==================== Main Streamlit App ====================
 
 st.title("📊 Kalkulator Proyeksi Investasi Multi-Aset")
@@ -517,7 +518,6 @@ with tab3:
         "Apa itu saham?": "Saham adalah bukti kepemilikan Anda terhadap sebuah perusahaan. Ketika Anda membeli saham, Anda menjadi salah satu pemiliknya dan berhak atas sebagian keuntungan (dividen) serta kenaikan nilai perusahaan.",
         "Apa itu obligasi?": "Obligasi adalah surat utang yang diterbitkan oleh pemerintah atau perusahaan. Ketika Anda membeli obligasi, Anda meminjamkan uang kepada penerbit dan akan mendapatkan bunga (kupon) secara berkala.",
         "Apa bedanya saham dan obligasi?": "Saham adalah bukti kepemilikan, sementara obligasi adalah surat utang. Saham memiliki risiko lebih tinggi namun potensi keuntungan lebih besar. Obligasi lebih stabil namun keuntungannya lebih terbatas.",
-        "Apa itu reksadana?": "Reksadana adalah wadah untuk mengumpulkan dana dari banyak investor untuk diinvestasikan dalam portofolio efek oleh Manajer Investasi. Ini adalah cara yang baik untuk diversifikasi dan cocok untuk pemula.",
         "Apa itu CAGR?": "CAGR adalah singkatan dari Compound Annual Growth Rate, atau Tingkat Pertumbuhan Tahunan Majemuk. Ini adalah rata-rata tingkat pertumbuhan tahunan yang dihitung dari suatu investasi dalam periode waktu tertentu. CAGR membantu mengukur seberapa efektif investasi tumbuh dari waktu ke waktu.",
         "Apa itu Inflasi?": "Inflasi adalah kenaikan harga barang dan jasa secara umum dan terus-menerus. Inflasi dapat mengurangi daya beli uang, yang berarti nilai riil investasi Anda juga bisa berkurang jika keuntungannya lebih kecil dari tingkat inflasi.",
         "Urutan investasi dari risiko rendah ke tinggi?": "Secara umum, urutan investasi dari risiko rendah ke tinggi adalah: **Deposito** → **Reksadana Pasar Uang** → **Obligasi Pemerintah** → **Reksadana Pendapatan Tetap** → **Emas** → **Properti** → **Reksadana Campuran** → **Reksadana Saham** → **Saham** → **Crypto**.",
@@ -551,8 +551,3 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
-
-
-
-
-

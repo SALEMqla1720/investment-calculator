@@ -29,10 +29,11 @@ st.set_page_config(
 # === CSS IN-LINE (DIsatukan ke dalam app.py) ===
 st.markdown("""
 <style>
-/* Mengubah warna background halaman */
+/* Mengubah warna background halaman dan memastikan warna teks default gelap */
 .stApp {
     background-color: #f0f2f6;
     padding-top: 1rem;
+    color: #333333; /* Memastikan teks utama berwarna gelap */
 }
 /* Mengubah warna sidebar */
 .st-emotion-cache-16txte9 {
@@ -104,20 +105,17 @@ div[data-testid="stWarning"] {
 }
 
 /* === PERBAIKAN LEBAR UTAMA === */
-/* Membatasi lebar konten utama */
-.st-emotion-cache-uf99v8 { /* Kontainer utama pada desktop */
+.st-emotion-cache-uf99v8 {
     max-width: 900px;
     margin: auto;
 }
-.st-emotion-cache-1f03405 { /* Kontainer utama pada mobile */
+.st-emotion-cache-1f03405 {
     max-width: 900px;
     margin: auto;
 }
-/* Memastikan kolom di dalam kontainer juga responsif */
 .st-emotion-cache-1j0k816 {
     gap: 1rem !important;
 }
-/* Menargetkan parent container dari semua elemen di halaman */
 div[data-testid="stVerticalBlock"] {
     max-width: 900px;
     margin: auto;
@@ -541,3 +539,4 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+

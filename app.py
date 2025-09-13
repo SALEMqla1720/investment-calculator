@@ -26,144 +26,143 @@ st.set_page_config(
     page_icon="📈"
 )
 
+# === CSS IN-LINE (Disatukan ke dalam app.py) ===
 st.markdown("""
 <style>
-/* Background utama */
+/* --- Gaya Umum: Menetapkan warna dasar dan font untuk seluruh aplikasi --- */
 .stApp {
-    background-color: #f0f8ff; /* biru muda */
-    padding-top: 1rem;
-    color: #222 !important;
+    background-color: #f0f8ff !important; /* Latar belakang biru muda */
+    color: #333333 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+/* Menargetkan semua elemen teks dan memastikan warnanya gelap */
+p, span, div, li, a, h1, h2, h3, h4, h5, h6,
+.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1a6x33v, .st-emotion-cache-19p087t {
+    color: #333333 !important;
+    font-size: 1.1rem !important; /* Meningkatkan ukuran font agar lebih mudah dibaca */
+}
+/* Memperbaiki warna teks di input dan label */
+div[data-testid="stTextInput"], div[data-testid="stNumberInput"], div[data-testid="stSelectbox"] {
+    color: #333333 !important;
 }
 
-/* Font utama sedikit lebih kecil */
-p, span, div {
-    color: #222 !important;
-    font-size: 0.95rem !important;  
-    background-color: #ffffff !important; /* putih bersih di belakang teks */
-    padding: 2px 4px; 
-    border-radius: 3px; /* biar rapi */
-}
-
+/* --- Gaya Komponen --- */
 /* Sidebar */
 .st-emotion-cache-16txte9 {
-    background-color: #ffffff;
-    font-size: 0.95rem !important;
+    background-color: #ffffff !important;
 }
-
 /* Judul Utama */
 h1 {
-    color: #1a437e;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 700;
-    text-align: center;
-    padding-bottom: 15px;
-    border-bottom: 3px solid #1a437e;
-    font-size: 1.6rem !important;
-    background-color: #e6f0ff; /* biru muda lembut */
-    border-radius: 6px;
+    color: #1a437e !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    padding-bottom: 20px !important;
+    border-bottom: 3px solid #1a437e !important;
+    font-size: 2rem !important;
 }
-
 /* Subheader */
 h3 {
-    color: #2c5ba3;
-    font-weight: 600;
-    border-bottom: 2px solid #2c5ba3;
-    padding-bottom: 4px;
-    font-size: 1.1rem !important;
-    background-color: #f0f8ff;
-    border-radius: 4px;
+    color: #2c5ba3 !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid #2c5ba3 !important;
+    padding-bottom: 5px !important;
+    font-size: 1.3rem !important;
 }
-
 /* Tombol */
 .stButton > button {
-    background-color: #2c5ba3;
+    background-color: #2c5ba3 !important;
     color: white !important;
-    border-radius: 8px;
-    font-weight: bold;
-    padding: 8px 16px;
-    transition: background-color 0.3s;
-    font-size: 0.95rem !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+    padding: 10px 20px !important;
+    transition: background-color 0.3s !important;
+    font-size: 1rem !important;
 }
 .stButton > button:hover {
-    background-color: #1a437e;
+    background-color: #1a437e !important;
 }
-
-/* Kotak Info */
+/* Kotak Info (Tanya Jawab Investasi) */
 div[data-testid="stInfo"] {
-    background-color: #e6f7ff;
+    background-color: #e6f7ff !important;
     color: #0056b3 !important;
-    border-left: 5px solid #0077c9;
-    font-size: 0.95rem !important;
+    border-left: 5px solid #0077c9 !important;
 }
-
+div[data-testid="stInfo"] p {
+    color: #0056b3 !important;
+}
 /* Kotak Warning */
 div[data-testid="stWarning"] {
-    background-color: #fff8e1;
+    background-color: #fff8e1 !important;
     color: #e65100 !important;
-    border-left: 5px solid #ff9900;
-    font-size: 0.95rem !important;
+    border-left: 5px solid #ff9900 !important;
 }
-
+div[data-testid="stWarning"] p {
+    color: #e65100 !important;
+}
 /* Dropdown & Multiselect */
-.st-emotion-cache-19p087t.e1l4501a1, .st-emotion-cache-1j0k816.e1f1d6gn4 {
-    color: #222 !important;
-    font-size: 0.95rem !important;
-    background-color: #ffffff !important;
+.st-emotion-cache-19p087t, .st-emotion-cache-1j0k816, .st-emotion-cache-1l092ci {
+    background-color: white !important;
+    color: black !important;
+    font-size: 1rem !important;
 }
-.st-emotion-cache-1r65j0p.e1l4501a1, .st-emotion-cache-10q2x7r {
-    background-color: #ffffff !important;
-    color: #000 !important;
+/* Menargetkan opsi dropdown */
+.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
+    background-color: white !important;
+    color: black !important;
 }
-
 /* Expander */
 .streamlit-expanderHeader {
-    background-color: #e8f0f8;
-    color: #2c3e50 !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 0.95rem !important;
+    background-color: #e8f0f8 !important;
+    color: #2c5ba3 !important;
+    border-radius: 5px !important;
+    font-weight: bold !important;
+    font-size: 1.05rem !important;
 }
-
 /* Chat Messages */
 .st-emotion-cache-1c7y2qn.ef3psqc12 {
-    background-color: #d1e7dd;
-    padding: 8px;
-    border-radius: 8px;
+    background-color: #d1e7dd !important;
+    padding: 10px !important;
+    border-radius: 10px !important;
     color: black !important;
-    font-size: 0.95rem !important;
+    font-size: 1rem !important;
 }
 .st-emotion-cache-w9v34c.ef3psqc10 {
-    background-color: #e9ecef;
-    padding: 8px;
-    border-radius: 8px;
+    background-color: #e9ecef !important;
+    padding: 10px !important;
+    border-radius: 10px !important;
     color: black !important;
-    font-size: 0.95rem !important;
+    font-size: 1rem !important;
 }
 
-/* Lebar konten utama */
-.st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .st-emotion-cache-1j0k816, div[data-testid="stVerticalBlock"] {
-    max-width: 900px;
-    margin: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
+/* --- Tata Letak & Responsive --- */
+.st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .block-container.st-emotion-cache-1j0k816 {
+    max-width: 900px !important;
+    margin: auto !important;
 }
-
-/* Mobile Responsive */
+.st-emotion-cache-1j0k816 {
+    gap: 1rem !important;
+}
+div[data-testid="stVerticalBlock"] {
+    max-width: 900px !important;
+    margin: auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
 @media (max-width: 768px) {
     .stApp {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        padding-top: 0.5rem;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 0.5rem !important;
     }
     div[data-testid="stVerticalBlock"] {
         max-width: 100% !important;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
     }
 }
 </style>
 """, unsafe_allow_html=True)
-
 
 # ==================== Main Streamlit App ====================
 
@@ -557,7 +556,3 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
-
-
-
-

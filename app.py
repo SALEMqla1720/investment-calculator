@@ -26,24 +26,29 @@ st.set_page_config(
     page_icon="📈"
 )
 
-# === CSS IN-LINE (DIsatukan ke dalam app.py) ===
 st.markdown("""
 <style>
-/* Mengubah warna background halaman dan memastikan warna teks default gelap */
+/* Mengubah warna background halaman */
 .stApp {
-    background-color: #f0f2f6;
+    background-color: #f0f8ff; /* biru muda */
     padding-top: 1rem;
     color: #333333 !important;
 }
-/* Menargetkan semua elemen p, span, dan div untuk memastikan warna teks gelap */
-p, span, div, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r {
+
+/* Perbesar ukuran font default */
+p, span, div {
     color: #333333 !important;
+    font-size: 1.05rem !important;  /* ukuran font sedikit lebih besar */
+    background-color: #ffffff !important; /* background putih */
 }
-/* Mengubah warna sidebar */
+
+/* Sidebar */
 .st-emotion-cache-16txte9 {
     background-color: #ffffff;
+    font-size: 1.05rem !important;
 }
-/* Mengubah font & warna judul utama */
+
+/* Judul Utama */
 h1 {
     color: #1a437e;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -51,15 +56,19 @@ h1 {
     text-align: center;
     padding-bottom: 20px;
     border-bottom: 3px solid #1a437e;
+    font-size: 2rem !important; /* lebih besar */
 }
-/* Gaya untuk subheader */
+
+/* Subheader */
 h3 {
     color: #2c5ba3;
     font-weight: 600;
     border-bottom: 2px solid #2c5ba3;
     padding-bottom: 5px;
+    font-size: 1.3rem !important;
 }
-/* Gaya untuk tombol */
+
+/* Tombol */
 .stButton > button {
     background-color: #2c5ba3;
     color: white !important;
@@ -67,89 +76,72 @@ h3 {
     font-weight: bold;
     padding: 10px 20px;
     transition: background-color 0.3s;
+    font-size: 1rem !important;
 }
 .stButton > button:hover {
     background-color: #1a437e;
 }
 
-/* === PERBAIKAN KHUSUS UNTUK KOTAK INFO & DROPDOWN === */
-
-/* Gaya untuk kotak info */
+/* Kotak Info */
 div[data-testid="stInfo"] {
     background-color: #e6f7ff;
-    color: #0056b3 !important; /* Warna teks yang kontras */
+    color: #0056b3 !important;
     border-left: 5px solid #0077c9;
-}
-div[data-testid="stInfo"] p {
-    color: #0056b3 !important; /* Memastikan teks di dalam p juga berwarna gelap */
+    font-size: 1rem !important;
 }
 
-/* Gaya untuk kotak warning */
+/* Kotak Warning */
 div[data-testid="stWarning"] {
     background-color: #fff8e1;
-    color: #e65100 !important; /* Warna teks yang kontras */
-    border-left: 5px solid #ff9900;
-}
-div[data-testid="stWarning"] p {
     color: #e65100 !important;
+    border-left: 5px solid #ff9900;
+    font-size: 1rem !important;
 }
 
-/* Memperbaiki warna teks di multiselect */
+/* Dropdown & Multiselect */
 .st-emotion-cache-19p087t.e1l4501a1, .st-emotion-cache-1j0k816.e1f1d6gn4 {
     color: #333333 !important;
+    font-size: 1rem !important;
 }
-
-/* Memperbaiki warna teks di opsi dropdown (menu) */
 .st-emotion-cache-1r65j0p.e1l4501a1, .st-emotion-cache-10q2x7r {
     background-color: white !important;
     color: black !important;
 }
 
-/* Gaya untuk expander */
+/* Expander */
 .streamlit-expanderHeader {
     background-color: #e8f0f8;
     color: #2c3e50 !important;
     border-radius: 5px;
     font-weight: bold;
+    font-size: 1.05rem !important;
 }
-/* Menghilangkan menu hamburger dan footer "Made with Streamlit" */
-#MainMenu, footer {
-    visibility: hidden;
-}
-/* Gaya untuk chat messages */
+
+/* Chat Messages */
 .st-emotion-cache-1c7y2qn.ef3psqc12 {
     background-color: #d1e7dd;
     padding: 10px;
     border-radius: 10px;
     color: black !important;
+    font-size: 1rem !important;
 }
 .st-emotion-cache-w9v34c.ef3psqc10 {
     background-color: #e9ecef;
     padding: 10px;
     border-radius: 10px;
     color: black !important;
+    font-size: 1rem !important;
 }
 
-/* === PERBAIKAN LEBAR UTAMA === */
-.st-emotion-cache-uf99v8 {
-    max-width: 900px;
-    margin: auto;
-}
-.st-emotion-cache-1f03405 {
-    max-width: 900px;
-    margin: auto;
-}
-.st-emotion-cache-1j0k816 {
-    gap: 1rem !important;
-}
-div[data-testid="stVerticalBlock"] {
+/* Lebar konten utama */
+.st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .st-emotion-cache-1j0k816, div[data-testid="stVerticalBlock"] {
     max-width: 900px;
     margin: auto;
     padding-left: 1rem;
     padding-right: 1rem;
 }
 
-/* Media Query untuk layar kecil (mobile) */
+/* Mobile Responsive */
 @media (max-width: 768px) {
     .stApp {
         padding-left: 1rem;
@@ -161,16 +153,10 @@ div[data-testid="stVerticalBlock"] {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
     }
-    .st-emotion-cache-16txte9 {
-        width: 100% !important;
-    }
-    .st-emotion-cache-1f03405.e1f1d6gn3 {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ==================== Main Streamlit App ====================
 
@@ -564,4 +550,5 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+
 

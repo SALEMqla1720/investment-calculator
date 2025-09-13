@@ -33,10 +33,10 @@ st.markdown("""
 .stApp {
     background-color: #f0f2f6;
     padding-top: 1rem;
-    color: #333333 !important; /* Memastikan teks utama berwarna gelap */
+    color: #333333 !important;
 }
 /* Menargetkan semua elemen p, span, dan div untuk memastikan warna teks gelap */
-p, span, div, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816 {
+p, span, div, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r {
     color: #333333 !important;
 }
 /* Mengubah warna sidebar */
@@ -71,18 +71,40 @@ h3 {
 .stButton > button:hover {
     background-color: #1a437e;
 }
+
+/* === PERBAIKAN KHUSUS UNTUK KOTAK INFO & DROPDOWN === */
+
 /* Gaya untuk kotak info */
 div[data-testid="stInfo"] {
     background-color: #e6f7ff;
-    color: #0056b3 !important;
+    color: #0056b3 !important; /* Warna teks yang kontras */
     border-left: 5px solid #0077c9;
 }
+div[data-testid="stInfo"] p {
+    color: #0056b3 !important; /* Memastikan teks di dalam p juga berwarna gelap */
+}
+
 /* Gaya untuk kotak warning */
 div[data-testid="stWarning"] {
     background-color: #fff8e1;
-    color: #e65100 !important;
+    color: #e65100 !important; /* Warna teks yang kontras */
     border-left: 5px solid #ff9900;
 }
+div[data-testid="stWarning"] p {
+    color: #e65100 !important;
+}
+
+/* Memperbaiki warna teks di multiselect */
+.st-emotion-cache-19p087t.e1l4501a1, .st-emotion-cache-1j0k816.e1f1d6gn4 {
+    color: #333333 !important;
+}
+
+/* Memperbaiki warna teks di opsi dropdown (menu) */
+.st-emotion-cache-1r65j0p.e1l4501a1, .st-emotion-cache-10q2x7r {
+    background-color: white !important;
+    color: black !important;
+}
+
 /* Gaya untuk expander */
 .streamlit-expanderHeader {
     background-color: #e8f0f8;
@@ -542,5 +564,6 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+
 
 

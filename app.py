@@ -28,27 +28,22 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-/* Mengubah warna background halaman */
+/* --- Gaya Umum ---
+    Mengatur font, warna teks, dan latar belakang utama.
+*/
 .stApp {
-    background-color: #f0f8ff; /* biru muda */
+    background-color: #f0f8ff; /* Latar belakang biru muda */
     padding-top: 1rem;
-    color: #333333 !important;
+    color: #333333;
 }
-
-/* Perbesar ukuran font default */
-p, span, div {
+p, span, div, a, li {
     color: #333333 !important;
-    font-size: 1.05rem !important;  /* ukuran font sedikit lebih besar */
-    background-color: #ffffff !important; /* background putih */
-}
-
-/* Sidebar */
-.st-emotion-cache-16txte9 {
-    background-color: #ffffff;
     font-size: 1.05rem !important;
 }
 
-/* Judul Utama */
+/* --- Gaya Header ---
+    Menyesuaikan tampilan judul utama dan subheader.
+*/
 h1 {
     color: #1a437e;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -56,16 +51,22 @@ h1 {
     text-align: center;
     padding-bottom: 20px;
     border-bottom: 3px solid #1a437e;
-    font-size: 2rem !important; /* lebih besar */
+    font-size: 2rem !important;
 }
-
-/* Subheader */
 h3 {
     color: #2c5ba3;
     font-weight: 600;
     border-bottom: 2px solid #2c5ba3;
     padding-bottom: 5px;
     font-size: 1.3rem !important;
+}
+
+/* --- Gaya Komponen ---
+    Menyesuaikan tampilan elemen interaktif seperti tombol dan input.
+*/
+/* Sidebar */
+.st-emotion-cache-16txte9 {
+    background-color: #ffffff;
 }
 
 /* Tombol */
@@ -89,6 +90,9 @@ div[data-testid="stInfo"] {
     border-left: 5px solid #0077c9;
     font-size: 1rem !important;
 }
+div[data-testid="stInfo"] p {
+    color: #0056b3 !important; /* Memastikan teks di dalam p juga berwarna gelap */
+}
 
 /* Kotak Warning */
 div[data-testid="stWarning"] {
@@ -97,13 +101,22 @@ div[data-testid="stWarning"] {
     border-left: 5px solid #ff9900;
     font-size: 1rem !important;
 }
+div[data-testid="stWarning"] p {
+    color: #e65100 !important;
+}
 
 /* Dropdown & Multiselect */
-.st-emotion-cache-19p087t.e1l4501a1, .st-emotion-cache-1j0k816.e1f1d6gn4 {
-    color: #333333 !important;
+.st-emotion-cache-19p087t, .st-emotion-cache-1j0k816, .st-emotion-cache-1l092ci {
+    background-color: white !important;
+    color: black !important;
     font-size: 1rem !important;
 }
-.st-emotion-cache-1r65j0p.e1l4501a1, .st-emotion-cache-10q2x7r {
+/* Menargetkan opsi dropdown */
+.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
+    background-color: white !important;
+    color: black !important;
+}
+.st-emotion-cache-1r65j0p div[role="listbox"], .st-emotion-cache-1r65j0p div[role="option"] {
     background-color: white !important;
     color: black !important;
 }
@@ -111,7 +124,7 @@ div[data-testid="stWarning"] {
 /* Expander */
 .streamlit-expanderHeader {
     background-color: #e8f0f8;
-    color: #2c3e50 !important;
+    color: #2c5ba3 !important;
     border-radius: 5px;
     font-weight: bold;
     font-size: 1.05rem !important;
@@ -133,15 +146,20 @@ div[data-testid="stWarning"] {
     font-size: 1rem !important;
 }
 
-/* Lebar konten utama */
+/* Menghilangkan menu dan footer bawaan */
+#MainMenu, footer {
+    visibility: hidden;
+}
+
+/* --- Lebar & Mobile Responsive ---
+    Memastikan tata letak proporsional di semua perangkat.
+*/
 .st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .st-emotion-cache-1j0k816, div[data-testid="stVerticalBlock"] {
     max-width: 900px;
     margin: auto;
     padding-left: 1rem;
     padding-right: 1rem;
 }
-
-/* Mobile Responsive */
 @media (max-width: 768px) {
     .stApp {
         padding-left: 1rem;
@@ -156,7 +174,6 @@ div[data-testid="stWarning"] {
 }
 </style>
 """, unsafe_allow_html=True)
-
 
 # ==================== Main Streamlit App ====================
 
@@ -550,5 +567,6 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+
 
 

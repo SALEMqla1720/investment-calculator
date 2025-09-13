@@ -33,7 +33,11 @@ st.markdown("""
 .stApp {
     background-color: #f0f2f6;
     padding-top: 1rem;
-    color: #333333; /* Memastikan teks utama berwarna gelap */
+    color: #333333 !important; /* Memastikan teks utama berwarna gelap */
+}
+/* Menargetkan semua elemen p, span, dan div untuk memastikan warna teks gelap */
+p, span, div, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816 {
+    color: #333333 !important;
 }
 /* Mengubah warna sidebar */
 .st-emotion-cache-16txte9 {
@@ -58,7 +62,7 @@ h3 {
 /* Gaya untuk tombol */
 .stButton > button {
     background-color: #2c5ba3;
-    color: white;
+    color: white !important;
     border-radius: 8px;
     font-weight: bold;
     padding: 10px 20px;
@@ -70,19 +74,19 @@ h3 {
 /* Gaya untuk kotak info */
 div[data-testid="stInfo"] {
     background-color: #e6f7ff;
-    color: #0056b3;
+    color: #0056b3 !important;
     border-left: 5px solid #0077c9;
 }
 /* Gaya untuk kotak warning */
 div[data-testid="stWarning"] {
     background-color: #fff8e1;
-    color: #e65100;
+    color: #e65100 !important;
     border-left: 5px solid #ff9900;
 }
 /* Gaya untuk expander */
 .streamlit-expanderHeader {
     background-color: #e8f0f8;
-    color: #2c3e50;
+    color: #2c3e50 !important;
     border-radius: 5px;
     font-weight: bold;
 }
@@ -95,13 +99,13 @@ div[data-testid="stWarning"] {
     background-color: #d1e7dd;
     padding: 10px;
     border-radius: 10px;
-    color: black;
+    color: black !important;
 }
 .st-emotion-cache-w9v34c.ef3psqc10 {
     background-color: #e9ecef;
     padding: 10px;
     border-radius: 10px;
-    color: black;
+    color: black !important;
 }
 
 /* === PERBAIKAN LEBAR UTAMA === */
@@ -145,7 +149,6 @@ div[data-testid="stVerticalBlock"] {
 }
 </style>
 """, unsafe_allow_html=True)
-
 # ==================== Main Streamlit App ====================
 
 st.title("📊 Kalkulator Proyeksi Investasi Multi-Aset")
@@ -539,4 +542,5 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+
 

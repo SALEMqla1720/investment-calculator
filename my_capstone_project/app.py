@@ -1,0 +1,543 @@
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import replicate
+import os
+from datetime import datetime
+import numpy as np
+import requests
+import math
+import yfinance as yf
+
+# Impor semua fungsi dan variabel dari file terpisah
+# Pastikan file helpers.py dan constants.py ada di folder yang sama
+from helpers import (
+    fmt_money, fmt_pct, beautify, proj, realval, cagr,
+    fetch_usd_idr, fetch_crypto_usd, fetch_yahoo_last_price
+)
+from constants import (
+    pajak, rate_default, cg_ids_map, crypto_ratios
+)
+
+# Konfigurasi halaman Streamlit agar lebih responsif
+st.set_page_config(
+    layout="wide",
+    page_title="Kalkulator Investasi",
+    page_icon="📈"
+)
+
+# === CSS IN-LINE (DIsatukan ke dalam app.py) ===
+st.markdown("""
+<style>
+/* Mengubah warna background halaman */
+.stApp {
+    background-color: #f0f2f6;
+    padding-top: 1rem;
+}
+/* Mengubah warna sidebar */
+.st-emotion-cache-16txte9 {
+    background-color: #ffffff;
+}
+/* Mengubah font & warna judul utama */
+h1 {
+    color: #1a437e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #1a437e;
+}
+/* Gaya untuk subheader */
+h3 {
+    color: #2c5ba3;
+    font-weight: 600;
+    border-bottom: 2px solid #2c5ba3;
+    padding-bottom: 5px;
+}
+/* Gaya untuk tombol */
+.stButton > button {
+    background-color: #2c5ba3;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+}
+.stButton > button:hover {
+    background-color: #1a437e;
+}
+/* Gaya untuk kotak info */
+div[data-testid="stInfo"] {
+    background-color: #e6f7ff;
+    color: #0056b3;
+    border-left: 5px solid #0077c9;
+}
+/* Gaya untuk kotak warning */
+div[data-testid="stWarning"] {
+    background-color: #fff8e1;
+    color: #e65100;
+    border-left: 5px solid #ff9900;
+}
+/* Gaya untuk expander */
+.streamlit-expanderHeader {
+    background-color: #e8f0f8;
+    color: #2c3e50;
+    border-radius: 5px;
+    font-weight: bold;
+}
+/* Menghilangkan menu hamburger dan footer "Made with Streamlit" */
+#MainMenu, footer {
+    visibility: hidden;
+}
+/* Gaya untuk chat messages */
+.st-emotion-cache-1c7y2qn.ef3psqc12 {
+    background-color: #d1e7dd;
+    padding: 10px;
+    border-radius: 10px;
+    color: black;
+}
+.st-emotion-cache-w9v34c.ef3psqc10 {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 10px;
+    color: black;
+}
+
+/* === PERBAIKAN LEBAR UTAMA === */
+/* Membatasi lebar konten utama */
+.st-emotion-cache-uf99v8 { /* Kontainer utama pada desktop */
+    max-width: 900px;
+    margin: auto;
+}
+.st-emotion-cache-1f03405 { /* Kontainer utama pada mobile */
+    max-width: 900px;
+    margin: auto;
+}
+/* Memastikan kolom di dalam kontainer juga responsif */
+.st-emotion-cache-1j0k816 {
+    gap: 1rem !important;
+}
+/* Menargetkan parent container dari semua elemen di halaman */
+div[data-testid="stVerticalBlock"] {
+    max-width: 900px;
+    margin: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Media Query untuk layar kecil (mobile) */
+@media (max-width: 768px) {
+    .stApp {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 0.5rem;
+    }
+    div[data-testid="stVerticalBlock"] {
+        max-width: 100% !important;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .st-emotion-cache-16txte9 {
+        width: 100% !important;
+    }
+    .st-emotion-cache-1f03405.e1f1d6gn3 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ==================== Main Streamlit App ====================
+
+st.title("📊 Kalkulator Proyeksi Investasi Multi-Aset")
+st.markdown("""
+<div style="font-size: 14px; color: #666; text-align: center;">
+    Kalkulator ini membantu Anda memproyeksikan nilai investasi di masa depan berdasarkan aset yang Anda miliki atau rekomendasi portofolio.
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("---")
+
+# Bagian Penjelasan Investasi
+with st.expander("📚 Belajar Investasi: Mulai dari Aset hingga Strategi"):
+    st.write("### 💰 Apa Itu Investasi?")
+    st.write("Investasi adalah kegiatan menempatkan dana atau aset dengan harapan mendapatkan keuntungan di masa depan. Ada berbagai jenis instrumen investasi dengan tingkat risiko dan potensi keuntungan yang berbeda.")
+    
+    st.write("---")
+    st.write("### 📈 Berbagai Instrumen Investasi")
+    st.write("#### **1. Reksadana**")
+    st.write("Wadah untuk mengumpulkan dana dari banyak investor untuk diinvestasikan dalam portofolio efek oleh Manajer Investasi. Cocok untuk pemula karena dikelola profesional dan diversifikasinya bagus.")
+    st.write("#### **2. Saham & ETF**")
+    st.write("**Saham** adalah bukti kepemilaman atas sebuah perusahaan. **ETF (Exchange Traded Fund)** adalah reksadana yang diperdagangkan seperti saham. Keduanya menawarkan potensi pertumbuhan tinggi.")
+    st.write("#### **3. Obligasi**")
+    st.write("Surat utang yang diterbitkan oleh pemerintah atau perusahaan. Investor akan mendapatkan imbal hasil (kupon) secara berkala. Risiko lebih rendah dari saham.")
+    
+    st.write("---")
+    st.write("### 🏛️ Detail Khusus: Obligasi Pemerintah (SBN & FR)")
+    st.write("#### **Surat Berharga Negara (SBN) Ritel**")
+    st.write("Dikeluarkan oleh pemerintah untuk investor individu. Sangat aman dan kuponnya pasti.")
+    st.markdown("- **ORI (Obligasi Negara Ritel)**: Kupon tetap, bisa diperdagangkan.")
+    st.markdown("- **SBR (Savings Bond Ritel)**: Kupon mengambang, tidak bisa diperdagangkan.")
+    st.markdown("- **SR (Sukuk Ritel)**: Obligasi Syariah dengan imbal hasil tetap, bisa diperdagangkan.")
+    st.write("#### **Obligasi FR (Fixed Rate)**")
+    st.write("Obligasi yang diperdagangkan di pasar sekunder dengan kupon tetap. Nilainya bisa naik-turun tergantung pergerakan suku bunga.")
+    
+    st.write("---")
+    st.write("### 📊 Perbandingan Risiko & Keuntungan")
+    risk_return = pd.DataFrame({
+        'Aset': ['Reksadana Pasar Uang', 'Obligasi', 'Emas', 'Properti', 'Reksadana Saham', 'Saham', 'Crypto'],
+        'Risiko': [1, 2, 3, 4, 4, 5, 5],
+        'Potensi Keuntungan': [1, 2, 2.5, 3.5, 4, 4.5, 5]
+    })
+    
+    fig, ax = plt.subplots(figsize=(10, 6))
+    plt.scatter(risk_return['Risiko'], risk_return['Potensi Keuntungan'], s=200, color='#2c5ba3', alpha=0.8)
+    for i, txt in enumerate(risk_return['Aset']):
+        ax.annotate(txt, (risk_return['Risiko'][i]+0.1, risk_return['Potensi Keuntungan'][i]), fontsize=10)
+    
+    ax.set_title('Hubungan Risiko vs. Potensi Keuntungan', fontsize=16)
+    ax.set_xlabel('Tingkat Risiko (Skala 1-5)', fontsize=12)
+    ax.set_ylabel("Potensi Keuntungan (Skala 1-5)", fontsize=12)
+    ax.grid(True)
+    st.pyplot(fig)
+
+
+st.markdown("---")
+
+st.subheader("⚠️ Cek Kesiapan Finansial")
+col_c1, col_c2 = st.columns(2)
+with col_c1:
+    siap_tabungan = st.checkbox("Saya punya tabungan minimal Rp10.000.000", value=True)
+with col_c2:
+    siap_darurat = st.checkbox("Saya punya dana darurat minimal 3 bulan", value=True)
+if not (siap_tabungan and siap_darurat):
+    st.warning("Prioritaskan dana darurat & tabungan dulu. Rekomendasi akan difokuskan ke risiko RENDAH.")
+
+st.markdown("---")
+
+st.subheader("⚙️ Asumsi & Parameter Dasar")
+col1, col2, col3 = st.columns(3)
+with col1:
+    inflasi = st.number_input("Asumsi inflasi tahunan (%)", min_value=0.0, value=4.0) / 100.0
+with col2:
+    tahun_beli = st.number_input("Tahun beli", value=datetime.now().year, format="%d")
+with col3:
+    tahun_target = st.number_input("Tahun target proyeksi", value=tahun_beli + 10, format="%d")
+
+tahun_ke = max(0, tahun_target - tahun_beli)
+
+usd_idr, fx_src = fetch_usd_idr()
+if not usd_idr:
+    usd_idr = st.number_input("Masukkan kurs USD/IDR manual", value=16000.0)
+else:
+    st.info(f"Kurs USD/IDR otomatis: {usd_idr:,.0f} ({fx_src})")
+
+gold_idr_per_gram = st.number_input("Harga emas per gram (Rp)", value=1_200_000.0)
+gold_src = "Manual"
+
+btc_rate = st.number_input("Asumsi pertumbuhan BTC per tahun (%)", value=25.0) / 100.0
+
+tab1, tab2, tab3 = st.tabs(["Kalkulator Aset Dimiliki", "Simulasi Portofolio Baru", "Tanya Jawab Investasi"])
+
+with tab1:
+    st.subheader("📝 Input Aset yang Anda Miliki")
+    owned_values = {}
+    owned_rates = {}
+    owned_sources = {}
+    owned = st.multiselect(
+        "Pilih aset yang Anda miliki",
+        ["Tanah", "Emas", "Crypto-BTC", "Crypto-ETH", "Crypto-SOL", "Crypto-XRP", "Crypto-BNB",
+         "Saham-BBCA", "Saham-BMRI", "Saham-BBRI", "Saham-AAPL", "ETF-SPY", "ETF-QQQ", "Obligasi", "Deposito",
+         "Reksadana Pasar Uang", "Reksadana Pendapatan Tetap", "Reksadana Saham",
+         "Reksadana Campuran"]
+    )
+
+    with st.expander("Isi detail aset yang dipilih"):
+        if "Tanah" in owned:
+            st.write("---")
+            st.write("### Tanah")
+            wilayah = st.selectbox("Pilih wilayah", ["Jakarta", "Bandung", "Karawang", "Cikarang", "Bekasi", "Tangerang", "Custom"])
+            wilayah_key = "Tanah-" + wilayah
+            rate_tanah = st.number_input(f"Asumsi pertumbuhan tahunan {wilayah} (%)", value=rate_default.get(wilayah_key, 0.07) * 100) / 100.0
+            luas = st.number_input("Luas tanah (m²)", value=100.0)
+            harga_m2 = st.number_input("Harga awal per m² (Rp)", value=3_500_000, format="%d")
+            biaya = st.number_input("Biaya tambahan (BPHTB/Notaris, Rp)", value=0, format="%d")
+            nilai_awal = luas * harga_m2 + biaya
+            owned_values[wilayah_key] = nilai_awal
+            owned_rates[wilayah_key] = rate_tanah
+            owned_sources[wilayah_key] = "Manual"
+
+        if "Emas" in owned:
+            st.write("---")
+            st.write("### Emas")
+            gram = st.number_input("Berat emas (gram)", value=10.0)
+            nilai_awal = gram * gold_idr_per_gram
+            owned_values["Emas"] = nilai_awal
+            owned_rates["Emas"] = rate_default["Emas"]
+            owned_sources["Emas"] = gold_src
+
+        crypto_owned = [a for a in owned if a.startswith("Crypto-")]
+        if crypto_owned:
+            st.write("---")
+            st.write("### Crypto")
+            crypto_usd, cg_src = fetch_crypto_usd([cg_ids_map[a] for a in crypto_owned if a in cg_ids_map])
+            for label in crypto_owned:
+                cid = cg_ids_map.get(label)
+                st.write(f"**{label}**")
+                usd_price = crypto_usd.get(cid)
+                if not usd_price:
+                    usd_price = st.number_input(f"Harga {label} per coin (USD)", key=f"crypto_price_{label}", value=1000.0)
+                else:
+                    st.info(f"Harga otomatis {label}: ${usd_price:,.2f} ({cg_src})")
+                jumlah = st.number_input(f"Jumlah {label}", key=f"crypto_jumlah_{label}", value=0.1 if "ETH" in label else (1.0 if "SOL" in label else 0.01))
+                nilai_awal = jumlah * usd_price * usd_idr
+                rate_coin = btc_rate * crypto_ratios.get(label, 1.0)
+                owned_values[label] = nilai_awal
+                owned_rates[label] = rate_coin
+                owned_sources[label] = cg_src or "Manual"
+
+        stock_map = {"Saham-BBCA": "BBCA.JK", "Saham-BMRI": "BMRI.JK", "Saham-BBRI": "BBRI.JK", "Saham-AAPL": "AAPL"}
+        for label, ticker in stock_map.items():
+            if label in owned:
+                st.write("---")
+                st.write(f"### {label}")
+                h, src = fetch_yahoo_last_price(ticker)
+                
+                yahoo_link = f"https://finance.yahoo.com/quote/{ticker}"
+                
+                if not h:
+                    h_idr = st.number_input("Harga per unit (Rp)", key=f"stock_price_{label}", value=1000, format="%d")
+                else:
+                    h_idr = h * (usd_idr if "AAPL" in label else 1)
+                    st.info(f"Harga otomatis {label}: Rp{h_idr:,.0f} ({src}) - [Cek di Yahoo Finance]({yahoo_link})")
+                
+                lot = st.number_input("Jumlah unit", key=f"stock_unit_{label}", value=1, format="%d")
+                nilai_awal = lot * (100 if "Saham-" in label else 1) * h_idr
+                owned_values[label] = nilai_awal
+                owned_rates[label] = rate_default[label]
+                owned_sources[label] = src or "Manual"
+                
+        etf_map = {"ETF-SPY": "SPY", "ETF-QQQ": "QQQ"}
+        for label, ticker in etf_map.items():
+            if label in owned:
+                st.write("---")
+                st.write(f"### {label}")
+                h, src = fetch_yahoo_last_price(ticker)
+
+                yahoo_link = f"https://finance.yahoo.com/quote/{ticker}"
+
+                if not h:
+                    h_idr = st.number_input("Harga per unit (Rp)", key=f"etf_price_{label}", value=1000, format="%d")
+                else:
+                    h_idr = h * usd_idr
+                    st.info(f"Harga otomatis {label}: Rp{h_idr:,.0f} ({src}) - [Cek di Yahoo Finance]({yahoo_link})")
+
+                unit = st.number_input("Jumlah unit", key=f"etf_unit_{label}", value=1, format="%d")
+                nilai_awal = unit * h_idr
+                owned_values[label] = nilai_awal
+                owned_rates[label] = rate_default[label]
+                owned_sources[label] = src or "Manual"
+
+        for rname in ["Obligasi", "Deposito", "Reksadana Pasar Uang", "Reksadana Pendapatan Tetap", "Reksadana Saham", "Reksadana Campuran"]:
+            if rname in owned:
+                st.write("---")
+                st.write(f"### {rname}")
+                nominal = st.number_input("Nominal awal (Rp)", key=f"nominal_{rname}", value=10_000_000, format="%d")
+                owned_values[rname] = nominal
+                owned_rates[rname] = rate_default[rname]
+                owned_sources[rname] = "Manual"
+
+    if st.button("Hitung Proyeksi Aset Dimiliki"):
+        if owned_values:
+            rows = {}
+            for aset, h0 in owned_values.items():
+                r = owned_rates.get(aset, 0.05)
+                years = list(range(1, tahun_ke + 1))
+                nominal_values = [proj(h0, r, y) for y in years]
+                real_values = [realval(n, y, inflasi) for y, n in zip(years, nominal_values)]
+                
+                rows[aset] = {
+                    "Nilai Awal (Rp)": h0,
+                    f"Nilai di {tahun_target} (Rp)": nominal_values[-1] if nominal_values else h0,
+                    f"Real di {tahun_target} (Rp)": real_values[-1] if real_values else h0,
+                    "CAGR (%)": cagr(h0, nominal_values[-1] if nominal_values else h0, tahun_ke) * 100
+                }
+            df_owned = pd.DataFrame(rows).T.sort_values(by=f"Nilai di {tahun_target} (Rp)", ascending=False)
+            
+            st.subheader("=== RINGKASAN ASET DIMILIKI ===")
+            st.dataframe(beautify(df_owned))
+            
+            st.subheader("Visualisasi Proyeksi Aset (Line Chart)")
+            fig, ax = plt.subplots(figsize=(12, 7))
+            
+            for aset in owned_values:
+                h0 = owned_values[aset]
+                r = owned_rates.get(aset, 0.05)
+                
+                years_axis = list(range(tahun_beli, tahun_target + 1))
+                nominal_values = [proj(h0, r, y - tahun_beli) for y in years_axis]
+                real_values = [realval(n, y - tahun_beli, inflasi) for y, n in zip(years_axis, nominal_values)]
+
+                ax.plot(years_axis, nominal_values, label=f'{aset} (Nominal)', marker='o', linestyle='-')
+                ax.plot(years_axis, real_values, label=f'{aset} (Real)', marker='x', linestyle='--')
+            
+            ax.set_title("Proyeksi Nilai Aset Nominal vs. Real", fontsize=16)
+            ax.set_xlabel("Tahun", fontsize=12)
+            ax.set_ylabel("Nilai (Rp)", fontsize=12)
+            ax.grid(True)
+            ax.legend()
+            
+            st.pyplot(fig)
+            
+        else:
+            st.info("Tidak ada aset yang diinput.")
+
+with tab2:
+    st.subheader("💼 Simulasi Portofolio Baru")
+    col4, col5 = st.columns(2)
+    with col4:
+        # Perbaikan di sini: nilai default diubah menjadi integer
+        modal_baru = st.number_input("Modal yang akan diinvestasikan (Rp)", value=100_000_000, format="%d")
+    with col5:
+        hold_thn = st.number_input("Lama hold (tahun)", value=3, format="%d")
+
+    def rate_for_label(label):
+        if label.startswith("Crypto-"):
+            return btc_rate * crypto_ratios.get(label, 1.0)
+        if label.startswith("Tanah-"):
+            return rate_default.get(label, rate_default["Tanah-Custom"])
+        return rate_default.get(label, 0.05)
+
+    def simulate_portfolio(allocation_dict, capital, years):
+        total_nominal_akhir = 0.0
+        total_awal = capital
+        breakdown = []
+        for aset, pct in allocation_dict.items():
+            nominal_awal = capital * (pct / 100.0)
+            r = rate_for_label(aset)
+            nominal_akhir = nominal_awal * ((1 + r) ** years)
+            pajak_key = aset.split("-")[0] if "-" in aset else aset
+            nominal_akhir_after_tax = nominal_akhir * (1 - pajak.get(pajak_key, 0))
+            total_nominal_akhir += nominal_akhir_after_tax
+            breakdown.append({
+                "Aset": aset, "Alokasi (%)": pct, "Rate (%)": r * 100,
+                "Nilai Akhir (Rp)": nominal_akhir_after_tax
+            })
+        real = total_nominal_akhir / ((1 + inflasi) ** years)
+        return {
+            "Nilai Awal (Rp)": total_awal,
+            f"Nilai Akhir {tahun_beli + years} (Rp)": total_nominal_akhir,
+            "Real (setelah inflasi)": real,
+            "Profit (Rp)": total_nominal_akhir - total_awal,
+            "Profit (%)": (total_nominal_akhir / total_awal - 1) if total_awal > 0 else 0,
+            "CAGR (%)": cagr(total_awal, total_nominal_akhir, years) * 100
+        }, pd.DataFrame(breakdown)
+
+    portfolio_options = {
+        "Rendah": {
+            "Opsi 1": {"Obligasi": 50, "Emas": 30, "Reksadana Pasar Uang": 20},
+            "Opsi 2": {"Reksadana Pendapatan Tetap": 50, "Deposito": 30, "Emas": 20},
+            "Opsi 3": {"Obligasi": 40, "Reksadana Pasar Uang": 40, "Emas": 20},
+        },
+        "Sedang": {
+            "Opsi 1": {"Saham-BBCA": 30, "Reksadana Campuran": 30, "Emas": 20, "Obligasi": 20},
+            "Opsi 2": {"Obligasi": 40, "Reksadana Saham": 40, "Emas": 20},
+            "Opsi 3": {"ETF-SPY": 30, "ETF-QQQ": 30, "Emas": 20, "Reksadana Campuran": 20},
+        },
+        "Tinggi": {
+            "Opsi 1": {"Crypto-BTC": 40, "Crypto-ETH": 30, "Saham-AAPL": 30},
+            "Opsi 2": {"Crypto-BTC": 40, "Crypto-ETH": 30, "Crypto-SOL": 20, "Emas": 10},
+            "Opsi 3": {"Crypto-BTC": 35, "Crypto-ETH": 25, "Crypto-XRP": 20, "Crypto-BNB": 10, "ETF-QQQ": 10},
+        }
+    }
+
+    prefer_category = "Rendah" if not (siap_tabungan and siap_darurat) else None
+    order = ["Rendah", "Sedang", "Tinggi"]
+
+    if st.button("Jalankan Simulasi Portofolio"):
+        all_results = {}
+        for kategori, opsi_map in portfolio_options.items():
+            all_results[kategori] = {}
+            for opsi, alloc in opsi_map.items():
+                summary, breakdown = simulate_portfolio(alloc, modal_baru, hold_thn)
+                all_results[kategori][opsi] = (summary, breakdown)
+
+        for cat in order:
+            st.markdown("---")
+            st.subheader(f"=== REKOMENDASI - PROFIL RISIKO {cat.upper()} ===")
+
+            ringkas_rows = {}
+            for opsi, (summary, breakdown) in all_results[cat].items():
+                ringkas_rows[opsi] = summary
+            df_ringkas = pd.DataFrame(ringkas_rows).T
+            label_col = [c for c in df_ringkas.columns if "Nilai Akhir" in c][0]
+            df_ringkas = df_ringkas.sort_values(by=label_col, ascending=False)
+            st.dataframe(beautify(df_ringkas))
+            
+            with st.expander(f"Lihat Rincian ({cat})"):
+                for opsi, (summary, breakdown) in all_results[cat].items():
+                    st.write(f"#### Rincian {opsi}")
+                    
+                    labels = list(portfolio_options[cat][opsi].keys())
+                    sizes = list(portfolio_options[cat][opsi].values())
+                    
+                    fig_pie, ax_pie = plt.subplots(figsize=(6, 6))
+                    ax_pie.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=plt.cm.Paired.colors)
+                    ax_pie.axis('equal')
+                    ax_pie.set_title(f"Alokasi Aset {opsi}")
+                    st.pyplot(fig_pie)
+                    
+                    st.dataframe(beautify(breakdown))
+
+            fig, ax = plt.subplots(figsize=(9, 5))
+            vals = df_ringkas[label_col].sort_values(ascending=False)
+            ax.bar(vals.index, vals.values, color='#2c5ba3')
+            ax.set_title(f"Perbandingan Nilai Akhir - Risiko {cat} (Hold {hold_thn} thn, Modal {fmt_money(modal_baru)})")
+            ax.set_ylabel("Nilai Akhir (Rp)")
+            plt.xticks(rotation=0)
+            st.pyplot(fig)
+
+with tab3:
+    st.subheader("❓ Tanya Jawab Investasi")
+    st.info("Pilih topik di bawah ini untuk mendapatkan jawaban cepat dan akurat.")
+
+    # --- Opsi 1: Pertanyaan Spesifik dengan Jawaban Langsung ---
+    faqs = {
+        "Apa itu saham?": "Saham adalah bukti kepemilikan Anda terhadap sebuah perusahaan. Ketika Anda membeli saham, Anda menjadi salah satu pemiliknya dan berhak atas sebagian keuntungan (dividen) serta kenaikan nilai perusahaan.",
+        "Apa itu obligasi?": "Obligasi adalah surat utang yang diterbitkan oleh pemerintah atau perusahaan. Ketika Anda membeli obligasi, Anda meminjamkan uang kepada penerbit dan akan mendapatkan bunga (kupon) secara berkala.",
+        "Apa bedanya saham dan obligasi?": "Saham adalah bukti kepemilikan, sementara obligasi adalah surat utang. Saham memiliki risiko lebih tinggi namun potensi keuntungan lebih besar. Obligasi lebih stabil namun keuntungannya lebih terbatas.",
+        "Apa itu reksadana?": "Reksadana adalah wadah untuk mengumpulkan dana dari banyak investor untuk diinvestasikan dalam portofolio efek oleh Manajer Investasi. Ini adalah cara yang baik untuk diversifikasi dan cocok untuk pemula.",
+        "Apa itu CAGR?": "CAGR adalah singkatan dari Compound Annual Growth Rate, atau Tingkat Pertumbuhan Tahunan Majemuk. Ini adalah rata-rata tingkat pertumbuhan tahunan yang dihitung dari suatu investasi dalam periode waktu tertentu. CAGR membantu mengukur seberapa efektif investasi tumbuh dari waktu ke waktu.",
+        "Apa itu Inflasi?": "Inflasi adalah kenaikan harga barang dan jasa secara umum dan terus-menerus. Inflasi dapat mengurangi daya beli uang, yang berarti nilai riil investasi Anda juga bisa berkurang jika keuntungannya lebih kecil dari tingkat inflasi.",
+        "Urutan investasi dari risiko rendah ke tinggi?": "Secara umum, urutan investasi dari risiko rendah ke tinggi adalah: **Deposito** → **Reksadana Pasar Uang** → **Obligasi Pemerintah** → **Reksadana Pendapatan Tetap** → **Emas** → **Properti** → **Reksadana Campuran** → **Reksadana Saham** → **Saham** → **Crypto**.",
+        "Berapa dana darurat yang ideal?": "Dana darurat yang ideal adalah dana yang bisa menutupi biaya hidup Anda selama **3 hingga 6 bulan**, atau bahkan lebih, tergantung pekerjaan dan tanggungan Anda. Dana ini harus disimpan di instrumen yang mudah dicairkan seperti tabungan atau reksadana pasar uang.",
+        "Kenapa investasi saham berisiko?": "Investasi saham berisiko karena nilainya bisa berfluktuasi tajam. Performa perusahaan, kondisi ekonomi, dan sentimen pasar dapat memengaruhi harga saham, yang bisa menyebabkan kerugian jika Anda menjual saat harga sedang turun.",
+        "Apakah berinvestasi di crypto itu aman?": "Berinvestasi di crypto memiliki risiko yang sangat tinggi karena harganya sangat fluktuatif. Keuntungannya bisa sangat besar, tetapi potensi kerugiannya juga tinggi. Investasi ini cocok untuk investor dengan profil risiko tinggi."
+    }
+
+    # Tampilkan tombol-tombol pertanyaan
+    cols = st.columns(2)
+    current_col = 0
+    if 'answer' not in st.session_state:
+        st.session_state['answer'] = None
+    
+    for question, answer in faqs.items():
+        with cols[current_col]:
+            if st.button(question, use_container_width=True):
+                st.session_state['answer'] = answer
+        current_col = (current_col + 1) % 2
+    
+    st.markdown("---")
+    
+    # Tampilkan jawaban jika tombol diklik
+    if st.session_state['answer']:
+        st.success(f"**Jawaban:**\n\n{st.session_state['answer']}")
+    
+    # --- Opsi 2: Arahkan ke AI Fleksibel (Gemini) ---
+    st.markdown("---")
+    st.subheader("Butuh jawaban yang lebih fleksibel?")
+    st.write("Jika pertanyaan Anda tidak ada di daftar, Anda bisa menggunakan AI lain untuk bantuan.")
+    st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
+    st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
+    st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")

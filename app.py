@@ -239,39 +239,39 @@ div[data-testid="stSuccess"] p {
 
 /* --- Perbaikan Multiselect / Dropdown (Kunci Perubahan) --- */
 /* Latar belakang input dan dropdown list */
-div[data-baseweb="select"] > div, 
-.st-emotion-cache-1r65j0p,
-.st-emotion-cache-10q2x7r,
-.st-emotion-cache-1y5w0a6 {
-    background-color: #ffffff !important; /* Seluruh area dropdown jadi putih */
+/* Menargetkan semua input field dan area multiselect/select */
+.st-emotion-cache-1j0k816, .st-emotion-cache-1cpx92x, 
+div[data-baseweb="input"], div[data-baseweb="select"], 
+.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
+    background-color: #e6f7ff !important; /* Biru Info Ringan */
     color: #333333 !important;
     border: 1px solid #ccc !important;
+    border-radius: 5px !important; /* Menambahkan border-radius untuk tampilan lebih baik */
 }
 
-/* Target dropdown yang melayang pada mobile */
+/* Target dropdown yang melayang pada desktop dan mobile (opsi yang muncul) */
+div[data-baseweb="popover"] > div > div, 
 div[role="listbox"] {
-    background-color: #e6f7ff !important; /* Latar belakang listbox biru muda */
+    background-color: #e6f7ff !important; /* Biru Info Ringan */
+    color: #333333 !important;
     border: 1px solid #ccc !important;
+    border-radius: 5px !important;
 }
 div[role="option"] {
-    background-color: #e6f7ff !important;
+    background-color: #e6f7ff !important; /* Biru Info Ringan */
     color: #333333 !important;
 }
 div[role="option"]:hover {
-    background-color: #d8eaff !important;
+    background-color: #d8eaff !important; /* Biru muda sedikit lebih gelap saat hover */
 }
-
-/* Warna teks di dalam list dropdown */
-.st-emotion-cache-10q2x7r p {
+/* Pastikan teks di dalam opsi juga benar */
+div[role="option"] > div > span {
     color: #333333 !important;
 }
-/* Latar belakang saat hover pada opsi */
-.st-emotion-cache-10q2x7r li:hover {
-    background-color: #e6f7ff !important; /* Biru muda saat hover */
-}
+
 /* Opsi yang sudah dipilih dalam multiselect */
 .st-emotion-cache-19p087t {
-    background-color: #e6f7ff !important; /* Biru muda */
+    background-color: #e6f7ff !important; /* Biru Info Ringan */
     color: #333333 !important;
     border-radius: 3px !important;
 }
@@ -283,16 +283,19 @@ div[role="option"]:hover {
     color: #333333 !important;
 }
 
-/* --- Expander --- */
+/* --- Expander (diperbarui) --- */
+/* Header Expander */
 .streamlit-expanderHeader {
-    background-color: #e8f0f8 !important;
-    color: #2c5ba3 !important;
+    background-color: #e6f7ff !important; /* Biru Info Ringan */
+    color: #1a437e !important; /* Teks biru tua */
     border-radius: 5px !important;
     font-weight: bold !important;
     padding: 10px !important;
+    border: 1px solid #cceeff !important; /* Border lebih terang */
 }
+/* Konten Expander */
 .streamlit-expanderContent {
-    background-color: #ffffff !important;
+    background-color: #ffffff !important; /* Tetap putih agar konten lebih mudah dibaca */
     padding: 15px !important;
     border-bottom-left-radius: 5px !important;
     border-bottom-right-radius: 5px !important;
@@ -357,7 +360,7 @@ with st.expander("📚 Belajar Investasi: Mulai dari Aset hingga Strategi"):
     st.write("#### **1. Reksadana**")
     st.write("Wadah untuk mengumpulkan dana dari banyak investor untuk diinvestasikan dalam portofolio efek oleh Manajer Investasi. Cocok untuk pemula karena dikelola profesional dan diversifikasinya bagus.")
     st.write("#### **2. Saham & ETF**")
-    st.write("**Saham** adalah bukti kepemilaman atas sebuah perusahaan. **ETF (Exchange Traded Fund)** adalah reksadana yang diperdagangkan seperti saham. Keduanya menawarkan potensi pertumbuhan tinggi.")
+    st.write("**Saham** adalah bukti kepemilmam atas sebuah perusahaan. **ETF (Exchange Traded Fund)** adalah reksadana yang diperdagangkan seperti saham. Keduanya menawarkan potensi pertumbuhan tinggi.")
     st.write("#### **3. Obligasi**")
     st.write("Surat utang yang diterbitkan oleh pemerintah atau perusahaan. Investor akan mendapatkan imbal hasil (kupon) secara berkala. Risiko lebih rendah dari saham.")
     
@@ -729,4 +732,3 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
-

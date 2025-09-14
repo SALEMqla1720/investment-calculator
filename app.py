@@ -139,7 +139,7 @@ st.markdown("""
 /* Biru Tua: #1a437e (Judul, penekanan kuat) */
 /* Biru Sedang/Primer: #2c5ba3 (Sub-judul, garis, info) */
 /* Biru Muda (latar belakang): #f0f8ff */
-/* Biru Info Ringan: #e6f7ff (Latar belakang elemen interaktif) */
+/* Krem: #F5F5DC (Latar belakang elemen interaktif) */
 /* Putih: #ffffff (Latar belakang konten, sidebar) */
 /* Abu-abu Gelap (Teks): #333333 */
 
@@ -199,7 +199,7 @@ h4 {
 
 /* --- Tombol & Tombol FAQ --- */
 .stButton > button {
-    background-color: #e6f7ff !important; /* Latar belakang biru muda */
+    background-color: #F5F5DC !important; /* Latar belakang krem */
     color: #1a437e !important; /* Teks biru tua */
     border-radius: 8px !important;
     font-weight: bold !important;
@@ -208,7 +208,7 @@ h4 {
     font-size: 1rem !important;
 }
 .stButton > button:hover {
-    background-color: #d8eaff !important; /* Warna hover sedikit lebih gelap */
+    background-color: #EEE8AA !important; /* Warna hover sedikit lebih gelap */
 }
 
 /* --- Kotak Info, Warning, Success --- */
@@ -242,7 +242,7 @@ div[data-testid="stSuccess"] p {
 /* Menargetkan semua input, select, dan multiselect */
 .st-emotion-cache-1j0k816, .st-emotion-cache-1cpx92x, 
 div[data-baseweb="input"], div[data-baseweb="select"] {
-    background-color: #e6f7ff !important; /* Menggunakan biru info ringan */
+    background-color: #F5F5DC !important; /* Menggunakan krem */
     color: #333333 !important;
     border: 1px solid #ccc !important;
     border-radius: 5px !important;
@@ -250,30 +250,30 @@ div[data-baseweb="input"], div[data-baseweb="select"] {
 
 /* Latar belakang untuk dropdown options (di desktop) */
 .st-emotion-cache-10q2x7r, .st-emotion-cache-1r65j0p, .st-emotion-cache-1y5w0a6 {
-    background-color: #e6f7ff !important;
+    background-color: #F5F5DC !important;
     color: #333333 !important;
 }
 
 /* Tombol + dan - pada number input */
 .st-emotion-cache-106x616 {
-    background-color: #d8eaff !important;
+    background-color: #EEE8AA !important; /* Krem yang sedikit lebih gelap */
     color: #1a437e !important;
 }
 
 /* Latar belakang dropdown yang muncul saat diklik (desktop dan mobile) */
 div[data-baseweb="popover"] > div > div, 
 div[role="listbox"] {
-    background-color: #e6f7ff !important; /* Menggunakan biru info ringan */
+    background-color: #F5F5DC !important; /* Menggunakan krem */
     color: #333333 !important;
     border: 1px solid #ccc !important;
     border-radius: 5px !important;
 }
 div[role="option"] {
-    background-color: #e6f7ff !important; /* Menggunakan biru info ringan */
+    background-color: #F5F5DC !important; /* Menggunakan krem */
     color: #333333 !important;
 }
 div[role="option"]:hover {
-    background-color: #d8eaff !important; /* Biru muda sedikit lebih gelap saat hover */
+    background-color: #EEE8AA !important; /* Krem sedikit lebih gelap saat hover */
 }
 /* Pastikan teks di dalam opsi juga benar */
 div[role="option"] > div > span {
@@ -282,7 +282,7 @@ div[role="option"] > div > span {
 
 /* Opsi yang sudah dipilih dalam multiselect */
 .st-emotion-cache-19p087t {
-    background-color: #d8eaff !important; /* Menggunakan warna yang sedikit lebih gelap agar terlihat dipilih */
+    background-color: #EEE8AA !important; /* Menggunakan warna yang sedikit lebih gelap agar terlihat dipilih */
     color: #333333 !important;
     border-radius: 3px !important;
 }
@@ -297,7 +297,7 @@ div[role="option"] > div > span {
 /* --- Expander (diperbarui) --- */
 /* Header Expander */
 .streamlit-expanderHeader {
-    background-color: #e6f7ff !important; /* Menggunakan biru info ringan */
+    background-color: #F5F5DC !important; /* Menggunakan krem */
     color: #1a437e !important;
     border-radius: 5px !important;
     font-weight: bold !important;

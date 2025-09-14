@@ -102,6 +102,16 @@ h4 {
 .stButton > button:hover {
     background-color: #1a437e !important; /* Biru tua saat hover */
 }
+/* Tombol di bagian FAQ (pertanyaan) */
+div[data-testid="column"] .stButton button {
+    background-color: #2c5ba3 !important; /* Tombol FAQ juga biru sedang */
+    color: white !important;
+    border: none !important;
+}
+div[data-testid="column"] .stButton button:hover {
+    background-color: #1a437e !important;
+}
+
 
 /* --- Kotak Info, Warning, Success --- */
 div[data-testid="stInfo"] {
@@ -130,43 +140,43 @@ div[data-testid="stSuccess"] p {
 }
 
 /* --- Perbaikan Multiselect / Dropdown --- */
-/* Latar belakang keseluruhan widget (bagian yang terlihat) */
-div[data-testid="stMultiSelect"], div[data-testid="stSelectbox"] {
-    background-color: #ffffff !important; /* Latar belakang widget putih */
+/* Target utama dropdown (bagian yang bisa diklik) */
+.st-emotion-cache-1r65j0p { /* Target untuk keseluruhan widget multiselect,selectbox */
+    background-color: #ffffff !important;
     border-radius: 5px !important;
+    border: 1px solid #ccc !important;
 }
-/* Teks yang sudah dipilih di dalam multiselect */
-.st-emotion-cache-19p087t div.st-emotion-cache-1r65j0p { /* Target untuk selected items */
-    background-color: #e8f0f8 !important; /* Warna biru muda yang sedikit lebih gelap untuk item terpilih */
+.st-emotion-cache-1r65j0p div[data-baseweb="input"] { /* Target input area */
+    background-color: #ffffff !important;
+}
+.st-emotion-cache-1r65j0p input {
+    color: #333333 !important;
+}
+
+/* Target daftar pilihan yang muncul (dropdown list) */
+.st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
+    background-color: #ffffff !important; /* Latar belakang list opsi putih */
+    color: #333333 !important;
+}
+/* Teks di dalam list opsi */
+.st-emotion-cache-10q2x7r p, .st-emotion-cache-1y5w0a6 p {
+    color: #333333 !important;
+}
+/* Latar belakang saat hover pada opsi */
+.st-emotion-cache-10q2x7r li:hover {
+    background-color: #e6f7ff !important; /* Biru muda saat hover */
+    color: #1a437e !important;
+}
+/* Opsi yang sudah dipilih */
+.st-emotion-cache-19p087t {
+    background-color: #e8f0f8 !important; /* Biru muda sedikit gelap untuk item yang dipilih */
     color: #333333 !important;
     border-radius: 3px !important;
 }
-/* Teks di dalam input (area teks multiselect/selectbox) */
-.st-emotion-cache-1j0k816 input, .st-emotion-cache-19p087t input {
-    background-color: #ffffff !important;
-    color: #333333 !important;
-}
-/* Opsi yang muncul saat dropdown dibuka (list item) */
-.st-emotion-cache-1r65j0p, /* Untuk list opsi secara umum */
-.st-emotion-cache-10q2x7r, /* Untuk opsi individu */
-.st-emotion-cache-1y5w0a6 { /* Untuk list yang digulir */
-    background-color: #ffffff !important; /* Latar belakang opsi putih */
-    color: #333333 !important; /* Teks opsi abu-abu gelap */
-}
-.st-emotion-cache-1r65j0p p, .st-emotion-cache-10q2x7r p, .st-emotion-cache-1y5w0a6 p {
-    color: #333333 !important; /* Memastikan teks di dalam opsi juga abu-abu gelap */
-}
-/* Hover state untuk opsi dropdown */
-.st-emotion-cache-1r65j0p div[role="option"]:hover,
-.st-emotion-cache-10q2x7r div[role="option"]:hover,
-.st-emotion-cache-1y5w0a6 div[role="option"]:hover {
-    background-color: #e6f7ff !important; /* Biru muda saat hover opsi */
-    color: #1a437e !important; /* Teks biru tua saat hover */
-}
-/* Tombol hapus (x) di multiselect */
 .st-emotion-cache-1049l0r {
     color: #333333 !important;
 }
+
 
 /* --- Expander --- */
 .streamlit-expanderHeader {
@@ -184,22 +194,6 @@ div[data-testid="stMultiSelect"], div[data-testid="stSelectbox"] {
     border-bottom-right-radius: 5px !important;
     border: 1px solid #e8f0f8; /* Border ringan */
     border-top: none;
-}
-
-/* --- Chat Messages (jika menggunakan st.chat_message) --- */
-/* User message */
-.st-emotion-cache-1c7y2qn.ef3psqc12 {
-    background-color: #d1e7dd !important; /* Hijau muda */
-    color: black !important;
-    border-radius: 10px !important;
-    padding: 10px !important;
-}
-/* Bot message */
-.st-emotion-cache-w9v34c.ef3psqc10 {
-    background-color: #e9ecef !important; /* Abu-abu muda */
-    color: black !important;
-    border-radius: 10px !important;
-    padding: 10px !important;
 }
 
 /* --- Menghilangkan Elemen Bawaan Streamlit --- */
@@ -631,3 +625,4 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+

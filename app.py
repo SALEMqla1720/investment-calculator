@@ -242,7 +242,7 @@ div[data-testid="stSuccess"] p {
 /* Menargetkan semua input, select, dan multiselect */
 .st-emotion-cache-1j0k816, .st-emotion-cache-1cpx92x, 
 div[data-baseweb="input"], div[data-baseweb="select"] {
-    background-color: #e6f7ff !important; /* Biru Info Ringan untuk input field */
+    background-color: #e6f7ff !important; /* Menggunakan biru info ringan */
     color: #333333 !important;
     border: 1px solid #ccc !important;
     border-radius: 5px !important;
@@ -256,20 +256,20 @@ div[data-baseweb="input"], div[data-baseweb="select"] {
 
 /* Tombol + dan - pada number input */
 .st-emotion-cache-106x616 {
-    background-color: #d8eaff !important; /* Biru muda yang sedikit lebih gelap */
+    background-color: #d8eaff !important;
     color: #1a437e !important;
 }
 
 /* Latar belakang dropdown yang muncul saat diklik (desktop dan mobile) */
 div[data-baseweb="popover"] > div > div, 
 div[role="listbox"] {
-    background-color: #e6f7ff !important; /* Biru Info Ringan */
+    background-color: #e6f7ff !important; /* Menggunakan biru info ringan */
     color: #333333 !important;
     border: 1px solid #ccc !important;
     border-radius: 5px !important;
 }
 div[role="option"] {
-    background-color: #e6f7ff !important; /* Biru Info Ringan */
+    background-color: #e6f7ff !important; /* Menggunakan biru info ringan */
     color: #333333 !important;
 }
 div[role="option"]:hover {
@@ -297,8 +297,8 @@ div[role="option"] > div > span {
 /* --- Expander (diperbarui) --- */
 /* Header Expander */
 .streamlit-expanderHeader {
-    background-color: #e6f7ff !important; /* Biru Info Ringan */
-    color: #1a437e !important; /* Teks biru tua */
+    background-color: #e6f7ff !important; /* Menggunakan biru info ringan */
+    color: #1a437e !important;
     border-radius: 5px !important;
     font-weight: bold !important;
     padding: 10px !important;
@@ -306,7 +306,7 @@ div[role="option"] > div > span {
 }
 /* Konten Expander (bagian dalam) */
 .streamlit-expanderContent {
-    background-color: #ffffff !important; /* Tetap putih agar konten lebih mudah dibaca */
+    background-color: #ffffff !important;
     padding: 15px !important;
     border-bottom-left-radius: 5px !important;
     border-bottom-right-radius: 5px !important;
@@ -743,4 +743,3 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
-

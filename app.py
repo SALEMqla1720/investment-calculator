@@ -7,122 +7,6 @@ import yfinance as yf
 from datetime import datetime
 import numpy as np
 
-# ============== KODE DARI constants.py ==============
-pajak = {
-    "Tanah": 0.0,
-    "Emas": 0.0,
-    "Crypto": 0.0,
-    "Saham": 0.0,
-    "ETF": 0.0,
-    "Obligasi": 0.0,
-    "Deposito": 0.0,
-    "Reksadana Pasar Uang": 0.0,
-    "Reksadana Pendapatan Tetap": 0.0,
-    "Reksadana Saham": 0.0,
-    "Reksadana Campuran": 0.0,
-}
-
-rate_default = {
-    "Tanah-Jakarta": 0.08,
-    "Tanah-Bandung": 0.08,
-    "Tanah-Karawang": 0.075,
-    "Tanah-Cikarang": 0.075,
-    "Tanah-Bekasi": 0.075,
-    "Tanah-Tangerang": 0.075,
-    "Tanah-Custom": 0.07,
-    "Emas": 0.07,
-    "Crypto-BTC": 0.20,
-    "Crypto-ETH": 0.15,
-    "Crypto-SOL": 0.18,
-    "Crypto-XRP": 0.1,
-    "Crypto-BNB": 0.12,
-    "Saham-BBCA": 0.1,
-    "Saham-BMRI": 0.11,
-    "Saham-BBRI": 0.1,
-    "Saham-AAPL": 0.15,
-    "ETF-SPY": 0.1,
-    "ETF-QQQ": 0.12,
-    "Obligasi": 0.07,
-    "Deposito": 0.035,
-    "Reksadana Pasar Uang": 0.045,
-    "Reksadana Pendapatan Tetap": 0.065,
-    "Reksadana Saham": 0.1,
-    "Reksadana Campuran": 0.08
-}
-
-cg_ids_map = {
-    "Crypto-BTC": "bitcoin",
-    "Crypto-ETH": "ethereum",
-    "Crypto-SOL": "solana",
-    "Crypto-XRP": "ripple",
-    "Crypto-BNB": "binancecoin"
-}
-
-crypto_ratios = {
-    "Crypto-ETH": 0.9,
-    "Crypto-SOL": 0.95,
-    "Crypto-XRP": 0.8,
-    "Crypto-BNB": 0.85
-}
-
-# ============== KODE DARI helpers.py ==============
-def fmt_money(value):
-    return f"Rp{value:,.0f}".replace(",", "X").replace(".", ",").replace("X", ".")
-
-def fmt_pct(value):
-    return f"{value*100:,.2f}%".replace(",", "X").replace(".", ",").replace("X", ".")
-
-def beautify(df):
-    def format_row(row):
-        for col in df.columns:
-            if "Rp" in col or "Nilai" in col or "Real" in col:
-                row[col] = fmt_money(row[col])
-            elif "%" in col or "Rate" in col:
-                row[col] = f"{row[col]:,.2f}%"
-        return row
-    return df.apply(format_row, axis=1)
-
-def proj(h0, r, t):
-    return h0 * ((1 + r) ** t)
-
-def realval(h, t, inf):
-    return h / ((1 + inf) ** t)
-
-def cagr(h0, h_end, t):
-    if h0 == 0: return 0
-    if h_end < 0: return -1
-    return (h_end/h0)**(1/t) - 1 if t > 0 else 0
-
-def fetch_usd_idr():
-    try:
-        response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
-        data = response.json()
-        if "rates" in data and "IDR" in data["rates"]:
-            return data["rates"]["IDR"], "Exchangerate-API"
-    except Exception as e:
-        st.error(f"Gagal mengambil kurs USD/IDR: {e}")
-    return None, None
-
-def fetch_crypto_usd(ids):
-    try:
-        ids_str = ",".join(ids)
-        response = requests.get(f"https://api.coingecko.com/api/v3/simple/price?ids={ids_str}&vs_currencies=usd")
-        data = response.json()
-        prices = {k: v['usd'] for k, v in data.items() if 'usd' in v}
-        return prices, "CoinGecko"
-    except Exception as e:
-        st.error(f"Gagal mengambil harga crypto: {e}")
-    return {}, None
-
-def fetch_yahoo_last_price(ticker):
-    try:
-        data = yf.download(ticker, period="1d", interval="1m")
-        if not data.empty:
-            return data['Close'].iloc[-1], "Yahoo Finance"
-    except Exception as e:
-        st.error(f"Gagal mengambil harga saham/ETF: {e}")
-    return None, None
-
 # ============== KODE UTAMA app.py (dengan semua perbaikan) ==============
 
 # Konfigurasi halaman Streamlit agar lebih responsif
@@ -134,9 +18,110 @@ st.set_page_config(
 
 # === CSS IN-LINE (Disatukan ke dalam app.py) ===
 st.markdown("""
-st.markdown("""
 <style>
-/* ... (kode lain tetap sama) ... */
+/* --- PALET WARNA KONSISTEN --- */
+/* Biru Tua: #1a437e (Judul, penekanan kuat) */
+/* Biru Sedang/Primer: #2c5ba3 (Sub-judul, garis, info) */
+/* Biru Muda (latar belakang): #f0f8ff */
+/* Krem: #F5F5DC (Latar belakang elemen interaktif) */
+/* Putih: #ffffff (Latar belakang konten, sidebar) */
+/* Abu-abu Gelap (Teks): #333333 */
+
+
+/* --- Gaya Umum Halaman & Teks --- */
+.stApp {
+    background-color: #f0f8ff !important;
+    color: #333333 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Memastikan semua elemen teks, termasuk di dalam komponen, berwarna abu-abu gelap */
+p, li, a, label, span, 
+.css-1d3f6kr, .css-1a6x33v, .css-16txte9, 
+.st-emotion-cache-1r65j0p p, 
+.st-emotion-cache-10q2x7r p,
+.st-emotion-cache-1y5w0a6 p,
+.st-emotion-cache-1j0k816 input, 
+.st-emotion-cache-19p087t input,
+.st-emotion-cache-1r65j0p span {
+    color: #333333 !important;
+    font-size: 1.1rem !important;
+}
+div, span {
+    color: #333333 !important;
+}
+/* Khusus untuk teks placeholder pada input */
+.st-emotion-cache-1cpx92x::placeholder {
+    color: #999999 !important;
+}
+
+/* --- Judul & Subheader --- */
+h1 {
+    color: #1a437e !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    border-bottom: 3px solid #1a437e !important;
+    padding-bottom: 15px !important;
+    font-size: 2.2rem !important;
+}
+h3 {
+    color: #2c5ba3 !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid #2c5ba3 !important;
+    padding-bottom: 5px !important;
+    font-size: 1.5rem !important;
+}
+h4 {
+    color: #2c5ba3 !important;
+    font-size: 1.3rem !important;
+}
+
+/* --- Sidebar --- */
+.st-emotion-cache-16txte9 {
+    background-color: #ffffff !important;
+}
+
+/* --- Tombol & Tombol FAQ --- */
+.stButton > button {
+    background-color: #2C5BA3 !important; /* Latar belakang biru laut */
+    color: #FFFFFF !important; /* Teks putih */
+    border-radius: 8px !important;
+    font-weight: bold !important;
+    padding: 10px 20px !important;
+    transition: background-color 0.3s !important;
+    font-size: 1rem !important;
+}
+.stButton > button:hover {
+    background-color: #1a437e !important; /* Warna hover biru tua */
+}
+
+/* --- Kotak Info, Warning, Success --- */
+div[data-testid="stInfo"] {
+    background-color: #e6f7ff !important;
+    border-left: 5px solid #0077c9 !important;
+    color: #0056b3 !important;
+}
+div[data-testid="stInfo"] p {
+    color: #0056b3 !important;
+}
+div[data-testid="stWarning"] {
+    background-color: #fff8e1 !important;
+    border-left: 5px solid #ff9900 !important;
+    color: #e65100 !important;
+}
+div[data-testid="stWarning"] p {
+    color: #e65100 !important;
+}
+div[data-testid="stSuccess"] {
+    background-color: #d4edda !important;
+    border-left: 5px solid #28a745 !important;
+    color: #155724 !important;
+}
+div[data-testid="stSuccess"] p {
+    color: #155724 !important;
+}
+
+/* --- PERBAIKAN UTAMA: INPUT DAN DROPDOWN --- */
 
 /* Menargetkan semua input, select, dan multiselect */
 .st-emotion-cache-1j0k816, .st-emotion-cache-1cpx92x, 
@@ -195,7 +180,12 @@ div[role="option"] > div > span {
 .st-emotion-cache-19p087t p {
     color: #ffffff !important;
 }
+/* Tombol hapus di multiselect */
+.st-emotion-cache-1049l0r {
+    color: #ffffff !important;
+}
 
+/* --- Expander (diperbarui) --- */
 /* Header Expander */
 .streamlit-expanderHeader {
     background-color: #2C5BA3 !important; /* Biru Laut */
@@ -205,7 +195,49 @@ div[role="option"] > div > span {
     padding: 10px !important;
     border: 1px solid #1a437e !important;
 }
-/* ... (kode lain tetap sama) ... */
+/* Konten Expander (bagian dalam) */
+.streamlit-expanderContent {
+    background-color: #ffffff !important;
+    padding: 15px !important;
+    border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    border: 1px solid #e8f0f8;
+    border-top: none;
+}
+
+/* --- Menghilangkan Elemen Bawaan Streamlit --- */
+#MainMenu, footer {
+    visibility: hidden !important;
+    height: 0px !important;
+}
+
+/* --- Mengatur Lebar Konten Utama & Responsif --- */
+.block-container {
+    max-width: 900px !important;
+    margin: auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-top: 1rem !important;
+}
+
+@media (max-width: 768px) {
+    .stApp {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    .block-container {
+        max-width: 100% !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    h1 {
+        font-size: 1.8rem !important;
+        padding-bottom: 10px !important;
+    }
+    h3 {
+        font-size: 1.2rem !important;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -602,4 +634,3 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
-

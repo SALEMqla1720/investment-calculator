@@ -138,9 +138,10 @@ st.markdown("""
 /* --- PALET WARNA KONSISTEN --- */
 /* Biru Tua: #1a437e (Judul, penekanan kuat) */
 /* Biru Sedang/Primer: #2c5ba3 (Sub-judul, garis, info) */
-/* Biru Muda (latar belakang): #f0f8ff */
+/* Biru Muda (latar belakang): #EBF5F8 */
 /* Putih: #ffffff (Latar belakang konten, teks utama) */
 /* Abu-abu Gelap (Teks): #333333 */
+
 
 /* --- Gaya Umum Halaman & Teks --- */
 .stApp {
@@ -215,88 +216,88 @@ div[data-testid="stSuccess"] p {
 }
 
 /* --- PERBAIKAN UTAMA: INPUT DAN DROPDOWN --- */
+/* Menggunakan Biru Muda (#EBF5F8) untuk latar belakang elemen-elemen interaktif */
 
-/* Menargetkan semua input, select, dan multiselect */
 .st-emotion-cache-1j0k816, .st-emotion-cache-1cpx92x, 
 div[data-baseweb="input"], div[data-baseweb="select"] {
-    background-color: #2C5BA3 !important; /* Biru Laut */
-    color: #FFFFFF !important; /* Teks putih agar terbaca */
-    border: 1px solid #1a437e !important;
+    background-color: #EBF5F8 !important; /* Biru muda */
+    color: #333333 !important; /* Teks hitam agar terbaca */
+    border: 1px solid #cceeff !important;
     border-radius: 5px !important;
 }
 
 /* Khusus untuk teks placeholder pada input agar tetap terlihat */
 .st-emotion-cache-1cpx92x::placeholder {
-    color: #B0C4DE !important; /* Placeholder biru muda */
+    color: #999999 !important; /* Placeholder abu-abu */
 }
 
 /* Teks di dalam input */
 .st-emotion-cache-1j0k816 input {
-    color: #FFFFFF !important;
+    color: #333333 !important;
 }
 
 /* Latar belakang untuk dropdown options (di desktop) */
 .st-emotion-cache-10q2x7r, .st-emotion-cache-1r65j0p, .st-emotion-cache-1y5w0a6 {
-    background-color: #2C5BA3 !important;
-    color: #FFFFFF !important;
+    background-color: #EBF5F8 !important;
+    color: #333333 !important;
 }
 .st-emotion-cache-1r65j0p p, .st-emotion-cache-10q2x7r p {
-    color: #FFFFFF !important;
+    color: #333333 !important;
 }
 
 /* Tombol + dan - pada number input */
 .st-emotion-cache-106x616 {
-    background-color: #1a437e !important; /* Biru tua */
-    color: #ffffff !important;
+    background-color: #d8e2e8 !important; /* Biru muda sedikit lebih gelap */
+    color: #1a437e !important;
 }
 
 /* Latar belakang dropdown yang muncul saat diklik (desktop dan mobile) */
 div[data-baseweb="popover"] > div > div, 
 div[role="listbox"] {
-    background-color: #2C5BA3 !important; /* Biru Laut */
-    color: #FFFFFF !important;
-    border: 1px solid #1a437e !important;
+    background-color: #EBF5F8 !important; /* Biru Muda */
+    color: #333333 !important;
+    border: 1px solid #cceeff !important;
     border-radius: 5px !important;
 }
 div[role="option"] {
-    background-color: #2C5BA3 !important; /* Biru Laut */
-    color: #FFFFFF !important;
+    background-color: #EBF5F8 !important; /* Biru Muda */
+    color: #333333 !important;
 }
 div[role="option"]:hover {
-    background-color: #1a437e !important; /* Biru tua saat hover */
+    background-color: #d8e2e8 !important; /* Biru muda saat hover */
 }
 /* Pastikan teks di dalam opsi juga benar */
 div[role="option"] > div > span {
-    color: #FFFFFF !important;
+    color: #333333 !important;
 }
 /* Mengubah warna teks pada multiselect */
 div[data-testid="stMultiSelect"] span {
-    color: #ffffff !important;
+    color: #333333 !important;
 }
 
 /* Opsi yang sudah dipilih dalam multiselect */
 .st-emotion-cache-19p087t {
-    background-color: #1a437e !important; /* Menggunakan warna yang sedikit lebih gelap */
-    color: #ffffff !important;
+    background-color: #d8e2e8 !important; 
+    color: #333333 !important;
     border-radius: 3px !important;
 }
 .st-emotion-cache-19p087t p {
-    color: #ffffff !important;
+    color: #333333 !important;
 }
 /* Tombol hapus di multiselect */
 .st-emotion-cache-1049l0r {
-    color: #ffffff !important;
+    color: #333333 !important;
 }
 
 /* --- Expander (diperbarui) --- */
 /* Header Expander */
 .streamlit-expanderHeader {
-    background-color: #2C5BA3 !important; /* Biru Laut */
-    color: #ffffff !important;
+    background-color: #EBF5F8 !important; /* Biru Muda */
+    color: #2c5ba3 !important; /* Biru Sedang */
     border-radius: 5px !important;
     font-weight: bold !important;
     padding: 10px !important;
-    border: 1px solid #1a437e !important;
+    border: 1px solid #cceeff !important;
 }
 /* Konten Expander (bagian dalam) */
 .streamlit-expanderContent {
@@ -320,6 +321,10 @@ div[data-testid="stMultiSelect"] span {
 }
 .stButton > button:hover {
     background-color: #1a437e !important; /* Warna hover biru tua */
+}
+/* Warna teks di dalam pilihan (contohnya di multiselect) */
+div[data-testid="stMultiSelect"] span {
+    color: #ffffff !important;
 }
 
 /* --- Menghilangkan Elemen Bawaan Streamlit --- */

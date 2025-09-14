@@ -140,7 +140,7 @@ st.markdown("""
 /* Biru Sedang/Primer: #2c5ba3 (Sub-judul, garis, info) */
 /* Biru Muda (latar belakang): #f0f8ff */
 /* Biru Info Ringan: #e6f7ff (Latar belakang elemen interaktif) */
-/* Putih: #ffffff (Latar belakang komponen, sidebar, input) */
+/* Putih: #ffffff (Latar belakang konten, sidebar) */
 /* Abu-abu Gelap (Teks): #333333 */
 
 
@@ -237,19 +237,30 @@ div[data-testid="stSuccess"] p {
     color: #155724 !important;
 }
 
-/* --- Perbaikan Multiselect / Dropdown (Kunci Perubahan) --- */
-/* Latar belakang input dan dropdown list */
-/* Menargetkan semua input field dan area multiselect/select */
+/* --- PERBAIKAN UTAMA: INPUT DAN DROPDOWN --- */
+
+/* Menargetkan semua input, select, dan multiselect */
 .st-emotion-cache-1j0k816, .st-emotion-cache-1cpx92x, 
-div[data-baseweb="input"], div[data-baseweb="select"], 
-.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
-    background-color: #e6f7ff !important; /* Biru Info Ringan */
+div[data-baseweb="input"], div[data-baseweb="select"] {
+    background-color: #e6f7ff !important; /* Biru Info Ringan untuk input field */
     color: #333333 !important;
     border: 1px solid #ccc !important;
-    border-radius: 5px !important; /* Menambahkan border-radius untuk tampilan lebih baik */
+    border-radius: 5px !important;
 }
 
-/* Target dropdown yang melayang pada desktop dan mobile (opsi yang muncul) */
+/* Latar belakang untuk dropdown options (di desktop) */
+.st-emotion-cache-10q2x7r, .st-emotion-cache-1r65j0p, .st-emotion-cache-1y5w0a6 {
+    background-color: #e6f7ff !important;
+    color: #333333 !important;
+}
+
+/* Tombol + dan - pada number input */
+.st-emotion-cache-106x616 {
+    background-color: #d8eaff !important; /* Biru muda yang sedikit lebih gelap */
+    color: #1a437e !important;
+}
+
+/* Latar belakang dropdown yang muncul saat diklik (desktop dan mobile) */
 div[data-baseweb="popover"] > div > div, 
 div[role="listbox"] {
     background-color: #e6f7ff !important; /* Biru Info Ringan */
@@ -271,7 +282,7 @@ div[role="option"] > div > span {
 
 /* Opsi yang sudah dipilih dalam multiselect */
 .st-emotion-cache-19p087t {
-    background-color: #e6f7ff !important; /* Biru Info Ringan */
+    background-color: #d8eaff !important; /* Menggunakan warna yang sedikit lebih gelap agar terlihat dipilih */
     color: #333333 !important;
     border-radius: 3px !important;
 }
@@ -291,9 +302,9 @@ div[role="option"] > div > span {
     border-radius: 5px !important;
     font-weight: bold !important;
     padding: 10px !important;
-    border: 1px solid #cceeff !important; /* Border lebih terang */
+    border: 1px solid #cceeff !important;
 }
-/* Konten Expander */
+/* Konten Expander (bagian dalam) */
 .streamlit-expanderContent {
     background-color: #ffffff !important; /* Tetap putih agar konten lebih mudah dibaca */
     padding: 15px !important;
@@ -732,3 +743,4 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+

@@ -144,15 +144,15 @@ div[data-baseweb="select"] > div,
 
 /* Latar belakang dropdown yang melayang pada mobile */
 div[role="listbox"] {
-    background-color: #ffffff !important; /* Latar belakang listbox putih */
+    background-color: #e6f7ff !important; /* Latar belakang listbox biru muda */
     border: 1px solid #ccc !important;
 }
 div[role="option"] {
-    background-color: #ffffff !important;
+    background-color: #e6f7ff !important;
     color: #333333 !important;
 }
 div[role="option"]:hover {
-    background-color: #e6f7ff !important;
+    background-color: #d8eaff !important;
 }
 
 /* Warna teks di dalam list dropdown */
@@ -229,7 +229,6 @@ div[role="option"]:hover {
 }
 </style>
 """, unsafe_allow_html=True)
-
 # ==================== Main Streamlit App ====================
 
 st.title("📊 Kalkulator Proyeksi Investasi Multi-Aset")
@@ -623,3 +622,4 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+

@@ -45,30 +45,25 @@ st.markdown("""
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
-/* Memastikan semua elemen teks utama berwarna abu-abu gelap */
-p, li, a, label, span, div.st-emotion-cache-1r65j0p p, 
-div[data-testid="stSidebarContent"] *,
+/* Memastikan semua elemen teks, termasuk di dalam komponen, berwarna abu-abu gelap */
+p, li, a, label, span, 
+.css-1d3f6kr, .css-1a6x33v, .css-16txte9, 
+.st-emotion-cache-1r65j0p p, 
 .st-emotion-cache-10q2x7r p,
-.st-emotion-cache-1y5w0a6 p {
+.st-emotion-cache-1y5w0a6 p,
+.st-emotion-cache-1j0k816 input, 
+.st-emotion-cache-19p087t input,
+.st-emotion-cache-1r65j0p span {
     color: #333333 !important;
     font-size: 1.1rem !important;
 }
-
-/* Khusus untuk teks yang berada di atas latar belakang biru tua/gelap */
-.st-emotion-cache-1r65j0p input, .st-emotion-cache-19p087t input,
-.st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
-    color: #333333 !important; /* Teks di dalam dropdown jadi abu-abu gelap */
-    background-color: #ffffff !important; /* Latar belakang dropdown jadi putih */
-}
-
-/* Mengubah warna teks pada input yang dipilih */
-div[data-testid="stMultiSelect"] .st-emotion-cache-19p087t div.st-emotion-cache-1r65j0p p {
+div, span {
     color: #333333 !important;
 }
-div[data-testid="stMultiSelect"] .st-emotion-cache-19p087t div.st-emotion-cache-1r65j0p {
-    background-color: #e6f7ff !important;
+/* Khusus untuk teks placeholder pada input */
+.st-emotion-cache-1cpx92x::placeholder {
+    color: #999999 !important;
 }
-
 
 /* --- Judul & Subheader --- */
 h1 {
@@ -96,10 +91,10 @@ h4 {
     background-color: #ffffff !important;
 }
 
-/* --- Tombol --- */
+/* --- Tombol & Tombol FAQ --- */
 .stButton > button {
-    background-color: #e6f7ff !important; /* Tombol jadi biru muda */
-    color: #1a437e !important; /* Teks tombol jadi biru tua */
+    background-color: #e6f7ff !important; /* Latar belakang biru muda */
+    color: #1a437e !important; /* Teks biru tua */
     border-radius: 8px !important;
     font-weight: bold !important;
     padding: 10px 20px !important;
@@ -136,23 +131,25 @@ div[data-testid="stSuccess"] p {
     color: #155724 !important;
 }
 
-/* --- Perbaikan Multiselect / Dropdown --- */
-/* Target utama dropdown (bagian yang bisa diklik) */
+/* --- Perbaikan Multiselect / Dropdown (Kunci Perubahan) --- */
+/* Latar belakang input dan dropdown list */
 div[data-baseweb="select"] > div, 
 .st-emotion-cache-1r65j0p,
 .st-emotion-cache-10q2x7r,
 .st-emotion-cache-1y5w0a6 {
-    background-color: #ffffff !important; /* Latar belakang dropdown putih */
-    color: #333333 !important; /* Teks abu-abu gelap */
-    border: 1px solid #ccc !important; /* Garis tepi yang jelas */
+    background-color: #ffffff !important; /* Seluruh area dropdown jadi putih */
+    color: #333333 !important;
+    border: 1px solid #ccc !important;
 }
-
+/* Warna teks di dalam list dropdown */
+.st-emotion-cache-10q2x7r p {
+    color: #333333 !important;
+}
 /* Latar belakang saat hover pada opsi */
 .st-emotion-cache-10q2x7r li:hover {
-    background-color: #e6f7ff !important;
-    color: #1a437e !important;
+    background-color: #e6f7ff !important; /* Biru muda saat hover */
 }
-/* Opsi yang sudah dipilih */
+/* Opsi yang sudah dipilih dalam multiselect */
 .st-emotion-cache-19p087t {
     background-color: #e6f7ff !important; /* Biru muda */
     color: #333333 !important;
@@ -161,6 +158,7 @@ div[data-baseweb="select"] > div,
 .st-emotion-cache-19p087t p {
     color: #333333 !important;
 }
+/* Tombol hapus di multiselect */
 .st-emotion-cache-1049l0r {
     color: #333333 !important;
 }
@@ -610,5 +608,6 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+
 
 

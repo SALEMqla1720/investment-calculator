@@ -7,6 +7,122 @@ import yfinance as yf
 from datetime import datetime
 import numpy as np
 
+# ============== KODE DARI constants.py ==============
+pajak = {
+    "Tanah": 0.0,
+    "Emas": 0.0,
+    "Crypto": 0.0,
+    "Saham": 0.0,
+    "ETF": 0.0,
+    "Obligasi": 0.0,
+    "Deposito": 0.0,
+    "Reksadana Pasar Uang": 0.0,
+    "Reksadana Pendapatan Tetap": 0.0,
+    "Reksadana Saham": 0.0,
+    "Reksadana Campuran": 0.0,
+}
+
+rate_default = {
+    "Tanah-Jakarta": 0.08,
+    "Tanah-Bandung": 0.08,
+    "Tanah-Karawang": 0.075,
+    "Tanah-Cikarang": 0.075,
+    "Tanah-Bekasi": 0.075,
+    "Tanah-Tangerang": 0.075,
+    "Tanah-Custom": 0.07,
+    "Emas": 0.07,
+    "Crypto-BTC": 0.20,
+    "Crypto-ETH": 0.15,
+    "Crypto-SOL": 0.18,
+    "Crypto-XRP": 0.1,
+    "Crypto-BNB": 0.12,
+    "Saham-BBCA": 0.1,
+    "Saham-BMRI": 0.11,
+    "Saham-BBRI": 0.1,
+    "Saham-AAPL": 0.15,
+    "ETF-SPY": 0.1,
+    "ETF-QQQ": 0.12,
+    "Obligasi": 0.07,
+    "Deposito": 0.035,
+    "Reksadana Pasar Uang": 0.045,
+    "Reksadana Pendapatan Tetap": 0.065,
+    "Reksadana Saham": 0.1,
+    "Reksadana Campuran": 0.08
+}
+
+cg_ids_map = {
+    "Crypto-BTC": "bitcoin",
+    "Crypto-ETH": "ethereum",
+    "Crypto-SOL": "solana",
+    "Crypto-XRP": "ripple",
+    "Crypto-BNB": "binancecoin"
+}
+
+crypto_ratios = {
+    "Crypto-ETH": 0.9,
+    "Crypto-SOL": 0.95,
+    "Crypto-XRP": 0.8,
+    "Crypto-BNB": 0.85
+}
+
+# ============== KODE DARI helpers.py ==============
+def fmt_money(value):
+    return f"Rp{value:,.0f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+def fmt_pct(value):
+    return f"{value*100:,.2f}%".replace(",", "X").replace(".", ",").replace("X", ".")
+
+def beautify(df):
+    def format_row(row):
+        for col in df.columns:
+            if "Rp" in col or "Nilai" in col or "Real" in col:
+                row[col] = fmt_money(row[col])
+            elif "%" in col or "Rate" in col:
+                row[col] = f"{row[col]:,.2f}%"
+        return row
+    return df.apply(format_row, axis=1)
+
+def proj(h0, r, t):
+    return h0 * ((1 + r) ** t)
+
+def realval(h, t, inf):
+    return h / ((1 + inf) ** t)
+
+def cagr(h0, h_end, t):
+    if h0 == 0: return 0
+    if h_end < 0: return -1
+    return (h_end/h0)**(1/t) - 1 if t > 0 else 0
+
+def fetch_usd_idr():
+    try:
+        response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
+        data = response.json()
+        if "rates" in data and "IDR" in data["rates"]:
+            return data["rates"]["IDR"], "Exchangerate-API"
+    except Exception as e:
+        st.error(f"Gagal mengambil kurs USD/IDR: {e}")
+    return None, None
+
+def fetch_crypto_usd(ids):
+    try:
+        ids_str = ",".join(ids)
+        response = requests.get(f"https://api.coingecko.com/api/v3/simple/price?ids={ids_str}&vs_currencies=usd")
+        data = response.json()
+        prices = {k: v['usd'] for k, v in data.items() if 'usd' in v}
+        return prices, "CoinGecko"
+    except Exception as e:
+        st.error(f"Gagal mengambil harga crypto: {e}")
+    return {}, None
+
+def fetch_yahoo_last_price(ticker):
+    try:
+        data = yf.download(ticker, period="1d", interval="1m")
+        if not data.empty:
+            return data['Close'].iloc[-1], "Yahoo Finance"
+    except Exception as e:
+        st.error(f"Gagal mengambil harga saham/ETF: {e}")
+    return None, None
+
 # ============== KODE UTAMA app.py (dengan semua perbaikan) ==============
 
 # Konfigurasi halaman Streamlit agar lebih responsif

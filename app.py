@@ -134,219 +134,78 @@ st.set_page_config(
 
 # === CSS IN-LINE (Disatukan ke dalam app.py) ===
 st.markdown("""
+st.markdown("""
 <style>
-/* --- PALET WARNA KONSISTEN --- */
-/* Biru Tua: #1a437e (Judul, penekanan kuat) */
-/* Biru Sedang/Primer: #2c5ba3 (Sub-judul, garis, info) */
-/* Biru Muda (latar belakang): #f0f8ff */
-/* Krem: #F5F5DC (Latar belakang elemen interaktif) */
-/* Putih: #ffffff (Latar belakang konten, sidebar) */
-/* Abu-abu Gelap (Teks): #333333 */
-
-
-/* --- Gaya Umum Halaman & Teks --- */
-.stApp {
-    background-color: #f0f8ff !important;
-    color: #333333 !important;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-}
-
-/* Memastikan semua elemen teks, termasuk di dalam komponen, berwarna abu-abu gelap */
-p, li, a, label, span, 
-.css-1d3f6kr, .css-1a6x33v, .css-16txte9, 
-.st-emotion-cache-1r65j0p p, 
-.st-emotion-cache-10q2x7r p,
-.st-emotion-cache-1y5w0a6 p,
-.st-emotion-cache-1j0k816 input, 
-.st-emotion-cache-19p087t input,
-.st-emotion-cache-1r65j0p span {
-    color: #333333 !important;
-    font-size: 1.1rem !important;
-}
-div, span {
-    color: #333333 !important;
-}
-/* Khusus untuk teks placeholder pada input */
-.st-emotion-cache-1cpx92x::placeholder {
-    color: #999999 !important;
-}
-
-/* --- Judul & Subheader --- */
-h1 {
-    color: #1a437e !important;
-    font-weight: 700 !important;
-    text-align: center !important;
-    border-bottom: 3px solid #1a437e !important;
-    padding-bottom: 15px !important;
-    font-size: 2.2rem !important;
-}
-h3 {
-    color: #2c5ba3 !important;
-    font-weight: 600 !important;
-    border-bottom: 2px solid #2c5ba3 !important;
-    padding-bottom: 5px !important;
-    font-size: 1.5rem !important;
-}
-h4 {
-    color: #2c5ba3 !important;
-    font-size: 1.3rem !important;
-}
-
-/* --- Sidebar --- */
-.st-emotion-cache-16txte9 {
-    background-color: #ffffff !important;
-}
-
-/* --- Tombol & Tombol FAQ --- */
-.stButton > button {
-    background-color: #F5F5DC !important; /* Latar belakang krem */
-    color: #1a437e !important; /* Teks biru tua */
-    border-radius: 8px !important;
-    font-weight: bold !important;
-    padding: 10px 20px !important;
-    transition: background-color 0.3s !important;
-    font-size: 1rem !important;
-}
-.stButton > button:hover {
-    background-color: #EEE8AA !important; /* Warna hover sedikit lebih gelap */
-}
-
-/* --- Kotak Info, Warning, Success --- */
-div[data-testid="stInfo"] {
-    background-color: #e6f7ff !important;
-    border-left: 5px solid #0077c9 !important;
-    color: #0056b3 !important;
-}
-div[data-testid="stInfo"] p {
-    color: #0056b3 !important;
-}
-div[data-testid="stWarning"] {
-    background-color: #fff8e1 !important;
-    border-left: 5px solid #ff9900 !important;
-    color: #e65100 !important;
-}
-div[data-testid="stWarning"] p {
-    color: #e65100 !important;
-}
-div[data-testid="stSuccess"] {
-    background-color: #d4edda !important;
-    border-left: 5px solid #28a745 !important;
-    color: #155724 !important;
-}
-div[data-testid="stSuccess"] p {
-    color: #155724 !important;
-}
-
-/* --- PERBAIKAN UTAMA: INPUT DAN DROPDOWN --- */
+/* ... (kode lain tetap sama) ... */
 
 /* Menargetkan semua input, select, dan multiselect */
 .st-emotion-cache-1j0k816, .st-emotion-cache-1cpx92x, 
 div[data-baseweb="input"], div[data-baseweb="select"] {
-    background-color: #F5F5DC !important; /* Menggunakan krem */
-    color: #333333 !important;
-    border: 1px solid #ccc !important;
+    background-color: #2C5BA3 !important; /* Biru Laut */
+    color: #FFFFFF !important; /* Teks putih agar terbaca */
+    border: 1px solid #1a437e !important;
     border-radius: 5px !important;
+}
+/* Khusus untuk teks placeholder pada input agar tetap terlihat */
+.st-emotion-cache-1cpx92x::placeholder {
+    color: #B0C4DE !important; /* Placeholder biru muda */
+}
+.st-emotion-cache-1j0k816 input {
+    color: #FFFFFF !important; /* Teks input juga putih */
 }
 
 /* Latar belakang untuk dropdown options (di desktop) */
 .st-emotion-cache-10q2x7r, .st-emotion-cache-1r65j0p, .st-emotion-cache-1y5w0a6 {
-    background-color: #F5F5DC !important;
-    color: #333333 !important;
+    background-color: #2C5BA3 !important;
+    color: #FFFFFF !important;
 }
 
 /* Tombol + dan - pada number input */
 .st-emotion-cache-106x616 {
-    background-color: #EEE8AA !important; /* Krem yang sedikit lebih gelap */
-    color: #1a437e !important;
+    background-color: #1a437e !important; /* Biru tua */
+    color: #ffffff !important;
 }
 
 /* Latar belakang dropdown yang muncul saat diklik (desktop dan mobile) */
 div[data-baseweb="popover"] > div > div, 
 div[role="listbox"] {
-    background-color: #F5F5DC !important; /* Menggunakan krem */
-    color: #333333 !important;
-    border: 1px solid #ccc !important;
+    background-color: #2C5BA3 !important; /* Biru Laut */
+    color: #FFFFFF !important;
+    border: 1px solid #1a437e !important;
     border-radius: 5px !important;
 }
 div[role="option"] {
-    background-color: #F5F5DC !important; /* Menggunakan krem */
-    color: #333333 !important;
+    background-color: #2C5BA3 !important; /* Biru Laut */
+    color: #FFFFFF !important;
 }
 div[role="option"]:hover {
-    background-color: #EEE8AA !important; /* Krem sedikit lebih gelap saat hover */
+    background-color: #1a437e !important; /* Biru tua saat hover */
 }
 /* Pastikan teks di dalam opsi juga benar */
 div[role="option"] > div > span {
-    color: #333333 !important;
+    color: #FFFFFF !important;
 }
 
 /* Opsi yang sudah dipilih dalam multiselect */
 .st-emotion-cache-19p087t {
-    background-color: #EEE8AA !important; /* Menggunakan warna yang sedikit lebih gelap agar terlihat dipilih */
-    color: #333333 !important;
+    background-color: #1a437e !important; /* Menggunakan warna yang sedikit lebih gelap */
+    color: #ffffff !important;
     border-radius: 3px !important;
 }
 .st-emotion-cache-19p087t p {
-    color: #333333 !important;
-}
-/* Tombol hapus di multiselect */
-.st-emotion-cache-1049l0r {
-    color: #333333 !important;
+    color: #ffffff !important;
 }
 
-/* --- Expander (diperbarui) --- */
 /* Header Expander */
 .streamlit-expanderHeader {
-    background-color: #F5F5DC !important; /* Menggunakan krem */
-    color: #1a437e !important;
+    background-color: #2C5BA3 !important; /* Biru Laut */
+    color: #ffffff !important;
     border-radius: 5px !important;
     font-weight: bold !important;
     padding: 10px !important;
-    border: 1px solid #cceeff !important;
+    border: 1px solid #1a437e !important;
 }
-/* Konten Expander (bagian dalam) */
-.streamlit-expanderContent {
-    background-color: #ffffff !important;
-    padding: 15px !important;
-    border-bottom-left-radius: 5px !important;
-    border-bottom-right-radius: 5px !important;
-    border: 1px solid #e8f0f8;
-    border-top: none;
-}
-
-/* --- Menghilangkan Elemen Bawaan Streamlit --- */
-#MainMenu, footer {
-    visibility: hidden !important;
-    height: 0px !important;
-}
-
-/* --- Mengatur Lebar Konten Utama & Responsif --- */
-.block-container {
-    max-width: 900px !important;
-    margin: auto !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-    padding-top: 1rem !important;
-}
-
-@media (max-width: 768px) {
-    .stApp {
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
-    }
-    .block-container {
-        max-width: 100% !important;
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
-    }
-    h1 {
-        font-size: 1.8rem !important;
-        padding-bottom: 10px !important;
-    }
-    h3 {
-        font-size: 1.2rem !important;
-    }
-}
+/* ... (kode lain tetap sama) ... */
 </style>
 """, unsafe_allow_html=True)
 
@@ -743,3 +602,4 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+

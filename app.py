@@ -142,8 +142,15 @@ div[data-baseweb="select"] > div,
     border: 1px solid #ccc !important;
 }
 
-/* Ini adalah target spesifik untuk menu dropdown di mobile */
-/* Latar belakang kontainer utama opsi yang melayang */
+/* Target dropdown yang melayang pada desktop */
+.st-emotion-cache-1r65j0p, .st-emotion-cache-1y5w0a6 {
+    background-color: #e6f7ff !important; /* Biru muda */
+}
+.st-emotion-cache-1y5w0a6 li:hover {
+    background-color: #d8eaff !important; /* Biru muda sedikit lebih gelap saat hover */
+}
+
+/* Target dropdown yang melayang pada mobile */
 div[data-baseweb="popover"] > div > div {
     background-color: #e6f7ff !important; /* Biru muda */
     color: #333333 !important;
@@ -631,5 +638,6 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+
 
 

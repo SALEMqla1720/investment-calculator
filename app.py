@@ -134,7 +134,6 @@ st.set_page_config(
 
 # === CSS IN-LINE (Disatukan ke dalam app.py) ===
 st.markdown("""
-st.markdown("""
 <style>
 /* --- PALET WARNA KONSISTEN --- */
 /* Biru Tua: #1a437e (Judul, penekanan kuat) */
@@ -142,7 +141,6 @@ st.markdown("""
 /* Biru Muda (latar belakang): #f0f8ff */
 /* Putih: #ffffff (Latar belakang konten, teks utama) */
 /* Abu-abu Gelap (Teks): #333333 */
-
 
 /* --- Gaya Umum Halaman & Teks --- */
 .stApp {
@@ -153,12 +151,15 @@ st.markdown("""
 
 /* Memastikan semua elemen teks, termasuk di dalam komponen, berwarna abu-abu gelap */
 p, li, a, label, span, 
-.css-1d3f6kr, .css-1a6x33v, .css-16txte9, 
+.css-1a6x33v, .css-16txte9, 
 .st-emotion-cache-1r65j0p p, 
 .st-emotion-cache-10q2x7r p,
 .st-emotion-cache-1y5w0a6 p {
     color: #333333 !important;
     font-size: 1.1rem !important;
+}
+.css-1d3f6kr {
+    color: #333333 !important;
 }
 
 /* --- Judul & Subheader --- */
@@ -750,5 +751,3 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
-
-

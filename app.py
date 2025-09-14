@@ -29,119 +29,212 @@ st.set_page_config(
 # === CSS IN-LINE (Disatukan ke dalam app.py) ===
 st.markdown("""
 <style>
-/* --- Gaya Umum Halaman --- */
+/* --- PALET WARNA KONSISTEN --- */
+/* Biru Tua: #1a437e */
+/* Biru Sedang/Primer: #2c5ba3 */
+/* Biru Muda (latar belakang halaman): #f0f8ff */
+/* Biru Info Ringan: #e6f7ff */
+/* Putih: #ffffff */
+/* Abu-abu Gelap (Teks): #333333 */
+
+
+/* --- Gaya Umum Halaman & Teks --- */
 .stApp {
-    background-color: #f0f8ff !important; /* Biru muda */
-    color: #333333 !important; /* Teks abu-abu gelap */
+    background-color: #f0f8ff !important; /* Latar belakang halaman utama (biru muda) */
+    color: #333333 !important; /* Warna teks default */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
-/* --- Penyesuaian Komponen Streamlit --- */
-/* Menjamin semua teks default terlihat jelas */
-p, li, a, label, .css-1d3f6kr, .css-1a6x33v, .css-16txte9, .st-emotion-cache-1r65j0p p {
+/* Memastikan semua elemen teks utama berwarna abu-abu gelap */
+p, li, a, label, span, div.st-emotion-cache-1r65j0p p, 
+div[data-testid="stSidebarContent"] * {
     color: #333333 !important;
-    font-size: 1.1rem !important;
+    font-size: 1.1rem !important; /* Ukuran font konsisten */
+}
+/* Untuk memastikan input dan text area juga memiliki warna teks yang benar */
+div[data-testid="stTextInput"] label,
+div[data-testid="stNumberInput"] label,
+div[data-testid="stSelectbox"] label,
+div[data-testid="stTextArea"] label {
+    color: #333333 !important;
+}
+input[type="text"], input[type="number"], textarea {
+    color: #333333 !important;
+    background-color: #ffffff !important; /* Latar belakang input putih */
 }
 
-/* Judul dan Subheader */
+/* --- Judul & Subheader --- */
 h1 {
     color: #1a437e !important; /* Biru tua untuk judul utama */
     font-weight: 700 !important;
     text-align: center !important;
     border-bottom: 3px solid #1a437e !important;
     padding-bottom: 15px !important;
-    font-size: 2rem !important;
+    font-size: 2.2rem !important;
 }
 h3 {
     color: #2c5ba3 !important; /* Biru sedang untuk subheader */
     font-weight: 600 !important;
     border-bottom: 2px solid #2c5ba3 !important;
     padding-bottom: 5px !important;
+    font-size: 1.5rem !important;
+}
+h4 {
+    color: #2c5ba3 !important; /* Konsisten dengan subheader */
     font-size: 1.3rem !important;
 }
 
-/* Tombol */
+/* --- Sidebar --- */
+.st-emotion-cache-16txte9 { /* Class untuk sidebar background */
+    background-color: #ffffff !important; /* Latar belakang sidebar putih */
+}
+
+/* --- Tombol --- */
 .stButton > button {
-    background-color: #2c5ba3 !important;
-    color: white !important;
+    background-color: #2c5ba3 !important; /* Biru sedang untuk tombol */
+    color: white !important; /* Teks putih pada tombol */
     border-radius: 8px !important;
     font-weight: bold !important;
     padding: 10px 20px !important;
+    transition: background-color 0.3s !important;
+    font-size: 1rem !important;
 }
 .stButton > button:hover {
-    background-color: #1a437e !important;
+    background-color: #1a437e !important; /* Biru tua saat hover */
 }
 
-/* Kotak Info dan Warning */
+/* --- Kotak Info, Warning, Success --- */
 div[data-testid="stInfo"] {
-    background-color: #e6f7ff !important;
+    background-color: #e6f7ff !important; /* Biru muda info */
     border-left: 5px solid #0077c9 !important;
-    color: #0056b3 !important;
+    color: #0056b3 !important; /* Teks biru gelap untuk info */
+}
+div[data-testid="stInfo"] p {
+    color: #0056b3 !important; /* Memastikan teks di dalam info juga biru gelap */
 }
 div[data-testid="stWarning"] {
-    background-color: #fff8e1 !important;
+    background-color: #fff8e1 !important; /* Kuning muda warning */
     border-left: 5px solid #ff9900 !important;
+    color: #e65100 !important; /* Teks oranye gelap untuk warning */
+}
+div[data-testid="stWarning"] p {
     color: #e65100 !important;
 }
-
-/* Perbaikan Multiselect / Dropdown: Kunci perbaikan ada di sini */
-/* Latar belakang kotak dropdown dan isian */
-div[data-testid="stMultiSelect"], div[data-testid="stSelectbox"] {
-    background-color: #ffffff !important;
-    border-radius: 5px !important;
+div[data-testid="stSuccess"] { /* Jika ada st.success */
+    background-color: #d4edda !important; /* Hijau muda success */
+    border-left: 5px solid #28a745 !important;
+    color: #155724 !important; /* Teks hijau gelap untuk success */
+}
+div[data-testid="stSuccess"] p {
+    color: #155724 !important;
 }
 
-/* Teks di dalam input */
+/* --- Perbaikan Multiselect / Dropdown --- */
+/* Latar belakang keseluruhan widget (bagian yang terlihat) */
+div[data-testid="stMultiSelect"], div[data-testid="stSelectbox"] {
+    background-color: #ffffff !important; /* Latar belakang widget putih */
+    border-radius: 5px !important;
+}
+/* Teks yang sudah dipilih di dalam multiselect */
+.st-emotion-cache-19p087t div.st-emotion-cache-1r65j0p { /* Target untuk selected items */
+    background-color: #e8f0f8 !important; /* Warna biru muda yang sedikit lebih gelap untuk item terpilih */
+    color: #333333 !important;
+    border-radius: 3px !important;
+}
+/* Teks di dalam input (area teks multiselect/selectbox) */
 .st-emotion-cache-1j0k816 input, .st-emotion-cache-19p087t input {
     background-color: #ffffff !important;
     color: #333333 !important;
 }
-/* Teks yang sudah dipilih di dalam dropdown */
-.st-emotion-cache-19p087t div.st-emotion-cache-1r65j0p {
-    background-color: #f0f8ff !important;
-}
-/* Opsi yang muncul saat dropdown dibuka */
-.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
-    background-color: #ffffff !important;
-    color: #333333 !important;
+/* Opsi yang muncul saat dropdown dibuka (list item) */
+.st-emotion-cache-1r65j0p, /* Untuk list opsi secara umum */
+.st-emotion-cache-10q2x7r, /* Untuk opsi individu */
+.st-emotion-cache-1y5w0a6 { /* Untuk list yang digulir */
+    background-color: #ffffff !important; /* Latar belakang opsi putih */
+    color: #333333 !important; /* Teks opsi abu-abu gelap */
 }
 .st-emotion-cache-1r65j0p p, .st-emotion-cache-10q2x7r p, .st-emotion-cache-1y5w0a6 p {
-    color: #333333 !important;
+    color: #333333 !important; /* Memastikan teks di dalam opsi juga abu-abu gelap */
+}
+/* Hover state untuk opsi dropdown */
+.st-emotion-cache-1r65j0p div[role="option"]:hover,
+.st-emotion-cache-10q2x7r div[role="option"]:hover,
+.st-emotion-cache-1y5w0a6 div[role="option"]:hover {
+    background-color: #e6f7ff !important; /* Biru muda saat hover opsi */
+    color: #1a437e !important; /* Teks biru tua saat hover */
 }
 /* Tombol hapus (x) di multiselect */
 .st-emotion-cache-1049l0r {
     color: #333333 !important;
 }
 
-/* Expander (Belajar Investasi) */
+/* --- Expander --- */
 .streamlit-expanderHeader {
-    background-color: #e8f0f8 !important;
-    color: #2c5ba3 !important;
+    background-color: #e8f0f8 !important; /* Biru muda sedikit gelap untuk header expander */
+    color: #2c5ba3 !important; /* Teks biru sedang */
     border-radius: 5px !important;
     font-weight: bold !important;
     padding: 10px !important;
 }
+/* Konten di dalam expander */
+.streamlit-expanderContent {
+    background-color: #ffffff !important; /* Latar belakang konten expander putih */
+    padding: 15px !important;
+    border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    border: 1px solid #e8f0f8; /* Border ringan */
+    border-top: none;
+}
 
-/* Chat Messages (jika menggunakan) */
+/* --- Chat Messages (jika menggunakan st.chat_message) --- */
+/* User message */
 .st-emotion-cache-1c7y2qn.ef3psqc12 {
-    background-color: #d1e7dd !important;
+    background-color: #d1e7dd !important; /* Hijau muda */
     color: black !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
 }
+/* Bot message */
 .st-emotion-cache-w9v34c.ef3psqc10 {
-    background-color: #e9ecef !important;
+    background-color: #e9ecef !important; /* Abu-abu muda */
     color: black !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
 }
 
-/* Menghilangkan footer dan menu Streamlit bawaan */
+/* --- Menghilangkan Elemen Bawaan Streamlit --- */
 #MainMenu, footer {
-    visibility: hidden;
+    visibility: hidden !important;
+    height: 0px !important;
 }
 
-/* Mengatur lebar konten utama */
+/* --- Mengatur Lebar Konten Utama --- */
 .block-container {
-    max-width: 900px !important;
-    margin: auto !important;
-    padding: 1rem !important;
+    max-width: 900px !important; /* Lebar maksimum konten */
+    margin: auto !important; /* Tengahkan konten */
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-top: 1rem !important;
+}
+
+/* --- Mobile Responsive (Penyesuaian untuk layar kecil) --- */
+@media (max-width: 768px) {
+    .stApp {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    .block-container {
+        max-width: 100% !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    h1 {
+        font-size: 1.8rem !important;
+        padding-bottom: 10px !important;
+    }
+    h3 {
+        font-size: 1.2rem !important;
+    }
 }
 </style>
 """, unsafe_allow_html=True)

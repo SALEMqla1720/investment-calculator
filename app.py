@@ -29,146 +29,116 @@ st.set_page_config(
 # === CSS IN-LINE (Disatukan ke dalam app.py) ===
 st.markdown("""
 <style>
-/* --- Gaya Umum: Menetapkan warna dasar dan font untuk seluruh aplikasi --- */
+/* --- Gaya Umum Halaman --- */
 .stApp {
-    background-color: #f0f8ff !important; /* Latar belakang biru muda */
-    color: #333333 !important;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    background-color: #f0f8ff; /* Biru muda yang lembut */
+    color: #333333; /* Teks abu-abu gelap untuk kejelasan */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 1rem;
 }
-/* Menargetkan semua elemen teks dan memastikan warnanya gelap */
-p, span, div, li, a, h1, h2, h3, h4, h5, h6,
-.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1f03405, .st-emotion-cache-16txte9, .st-emotion-cache-uf99v8, .st-emotion-cache-1j0k816, .st-emotion-cache-1a6x33v, .st-emotion-cache-19p087t {
-    color: #333333 !important;
-    font-size: 1.1rem !important; /* Meningkatkan ukuran font agar lebih mudah dibaca */
-}
-/* Memperbaiki warna teks di input dan label */
-div[data-testid="stTextInput"], div[data-testid="stNumberInput"], div[data-testid="stSelectbox"] {
+
+/* --- Penyesuaian Komponen Streamlit --- */
+/* Menjamin semua teks default terlihat jelas */
+p, li, a, label, .css-1d3f6kr, .css-1a6x33v, .css-16txte9 {
     color: #333333 !important;
 }
 
-/* --- Gaya Komponen --- */
+/* Judul dan Subheader */
+h1 {
+    color: #1a437e; /* Biru tua untuk judul utama */
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 3px solid #1a437e;
+    padding-bottom: 15px;
+}
+h3 {
+    color: #2c5ba3; /* Biru sedang untuk subheader */
+    font-weight: 600;
+    border-bottom: 2px solid #2c5ba3;
+    padding-bottom: 5px;
+}
+
 /* Sidebar */
 .st-emotion-cache-16txte9 {
-    background-color: #ffffff !important;
+    background-color: #ffffff;
 }
-/* Judul Utama */
-h1 {
-    color: #1a437e !important;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    font-weight: 700 !important;
-    text-align: center !important;
-    padding-bottom: 20px !important;
-    border-bottom: 3px solid #1a437e !important;
-    font-size: 2rem !important;
-}
-/* Subheader */
-h3 {
-    color: #2c5ba3 !important;
-    font-weight: 600 !important;
-    border-bottom: 2px solid #2c5ba3 !important;
-    padding-bottom: 5px !important;
-    font-size: 1.3rem !important;
-}
+
 /* Tombol */
 .stButton > button {
-    background-color: #2c5ba3 !important;
+    background-color: #2c5ba3;
     color: white !important;
-    border-radius: 8px !important;
-    font-weight: bold !important;
-    padding: 10px 20px !important;
-    transition: background-color 0.3s !important;
-    font-size: 1rem !important;
+    border-radius: 8px;
+    font-weight: bold;
+    padding: 10px 20px;
 }
 .stButton > button:hover {
-    background-color: #1a437e !important;
+    background-color: #1a437e;
 }
-/* Kotak Info (Tanya Jawab Investasi) */
+
+/* Kotak Info dan Warning */
 div[data-testid="stInfo"] {
-    background-color: #e6f7ff !important;
-    color: #0056b3 !important;
-    border-left: 5px solid #0077c9 !important;
+    background-color: #e6f7ff;
+    border-left: 5px solid #0077c9;
 }
-div[data-testid="stInfo"] p {
-    color: #0056b3 !important;
-}
-/* Kotak Warning */
 div[data-testid="stWarning"] {
-    background-color: #fff8e1 !important;
-    color: #e65100 !important;
-    border-left: 5px solid #ff9900 !important;
-}
-div[data-testid="stWarning"] p {
-    color: #e65100 !important;
+    background-color: #fff8e1;
+    border-left: 5px solid #ff9900;
 }
 
-/* --- Perbaikan KRUSIAL untuk Multiselect --- */
-/* Latar belakang dropdown saat terbuka */
-.st-emotion-cache-19p087t, .st-emotion-cache-1j0k816, .st-emotion-cache-1l092ci {
-    background-color: white !important;
-    color: black !important;
-    font-size: 1rem !important;
+/* Perbaikan Multiselect / Dropdown */
+/* Latar belakang kotak dropdown dan isian */
+div[data-testid="stMultiSelect"], div[data-testid="stSelectbox"], div[data-testid="stTextInput"], div[data-testid="stNumberInput"] {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 5px;
+}
+/* Teks di dalam input */
+.st-emotion-cache-1j0k816 input, .st-emotion-cache-19p087t input {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+}
+/* Opsi yang muncul saat dropdown dibuka */
+.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6 {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+}
+.st-emotion-cache-1r65j0p p, .st-emotion-cache-10q2x7r p, .st-emotion-cache-1y5w0a6 p {
+    color: #333333 !important; /* Menjamin teks opsi terlihat jelas */
 }
 
-/* Teks Opsi pada dropdown (kunci perbaikan) */
-.st-emotion-cache-1r65j0p, .st-emotion-cache-10q2x7r, .st-emotion-cache-1y5w0a6, 
-.st-emotion-cache-19p087t div[role="option"] p, .st-emotion-cache-1r65j0p p {
-    color: black !important;
-}
-
-
-/* Expander */
+/* Expander (Belajar Investasi) */
 .streamlit-expanderHeader {
-    background-color: #e8f0f8 !important;
-    color: #2c5ba3 !important;
-    border-radius: 5px !important;
-    font-weight: bold !important;
-    font-size: 1.05rem !important;
+    background-color: #e8f0f8;
+    color: #2c5ba3;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 10px;
 }
-/* Chat Messages */
+
+/* Chat Messages (Opsional jika Anda menggunakan st.chat_message) */
 .st-emotion-cache-1c7y2qn.ef3psqc12 {
-    background-color: #d1e7dd !important;
-    padding: 10px !important;
-    border-radius: 10px !important;
-    color: black !important;
-    font-size: 1rem !important;
+    background-color: #d1e7dd;
+    color: black;
 }
 .st-emotion-cache-w9v34c.ef3psqc10 {
-    background-color: #e9ecef !important;
-    padding: 10px !important;
-    border-radius: 10px !important;
-    color: black !important;
-    font-size: 1rem !important;
+    background-color: #e9ecef;
+    color: black;
 }
 
-/* --- Tata Letak & Responsive --- */
-.st-emotion-cache-uf99v8, .st-emotion-cache-1f03405, .block-container.st-emotion-cache-1j0k816 {
-    max-width: 900px !important;
-    margin: auto !important;
+/* Menghilangkan footer dan menu Streamlit bawaan */
+#MainMenu, footer {
+    visibility: hidden;
 }
-.st-emotion-cache-1j0k816 {
-    gap: 1rem !important;
-}
-div[data-testid="stVerticalBlock"] {
-    max-width: 900px !important;
-    margin: auto !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-}
-@media (max-width: 768px) {
-    .stApp {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        padding-top: 0.5rem !important;
-    }
-    div[data-testid="stVerticalBlock"] {
-        max-width: 100% !important;
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
-    }
+
+/* Mengatur lebar konten utama */
+.block-container {
+    max-width: 900px;
+    margin: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
-
 # ==================== Main Streamlit App ====================
 
 st.title("📊 Kalkulator Proyeksi Investasi Multi-Aset")
@@ -561,3 +531,4 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
+

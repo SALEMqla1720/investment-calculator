@@ -141,6 +141,20 @@ div[data-baseweb="select"] > div,
     color: #333333 !important;
     border: 1px solid #ccc !important;
 }
+
+/* Latar belakang dropdown yang melayang pada mobile */
+div[role="listbox"] {
+    background-color: #ffffff !important; /* Latar belakang listbox putih */
+    border: 1px solid #ccc !important;
+}
+div[role="option"] {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+}
+div[role="option"]:hover {
+    background-color: #e6f7ff !important;
+}
+
 /* Warna teks di dalam list dropdown */
 .st-emotion-cache-10q2x7r p {
     color: #333333 !important;
@@ -580,7 +594,8 @@ with tab3:
         "Urutan investasi dari risiko rendah ke tinggi?": "Secara umum, urutan investasi dari risiko rendah ke tinggi adalah: **Deposito** → **Reksadana Pasar Uang** → **Obligasi Pemerintah** → **Reksadana Pendapatan Tetap** → **Emas** → **Properti** → **Reksadana Campuran** → **Reksadana Saham** → **Saham** → **Crypto**.",
         "Berapa dana darurat yang ideal?": "Dana darurat yang ideal adalah dana yang bisa menutupi biaya hidup Anda selama **3 hingga 6 bulan**, atau bahkan lebih, tergantung pekerjaan dan tanggungan Anda. Dana ini harus disimpan di instrumen yang mudah dicairkan seperti tabungan atau reksadana pasar uang.",
         "Kenapa investasi saham berisiko?": "Investasi saham berisiko karena nilainya bisa berfluktuasi tajam. Performa perusahaan, kondisi ekonomi, dan sentimen pasar dapat memengaruhi harga saham, yang bisa menyebabkan kerugian jika Anda menjual saat harga sedang turun.",
-        "Apakah berinvestasi di crypto itu aman?": "Berinvestasi di crypto memiliki risiko yang sangat tinggi karena harganya sangat fluktuatif. Keuntungannya bisa sangat besar, tetapi potensi kerugiannya juga tinggi. Investasi ini cocok untuk investor dengan profil risiko tinggi."
+        "Apakah berinvestasi di crypto itu aman?": "Berinvestasi di crypto memiliki risiko yang sangat tinggi karena harganya sangat fluktuatif. Keuntungannya bisa sangat besar, tetapi potensi kerugiannya juga tinggi. Investasi ini cocok untuk investor dengan profil risiko tinggi.",
+        "Apa itu diversifikasi?": "Diversifikasi adalah strategi mengalokasikan investasi ke berbagai jenis aset untuk mengurangi risiko. Tujuannya adalah agar kerugian di satu aset dapat diimbangi oleh keuntungan di aset lain."
     }
 
     # Tampilkan tombol-tombol pertanyaan
@@ -608,6 +623,3 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
-
-
-

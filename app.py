@@ -1,23 +1,129 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import replicate
-import os
-from datetime import datetime
-import numpy as np
 import requests
 import math
 import yfinance as yf
+from datetime import datetime
+import numpy as np
 
-# Impor semua fungsi dan variabel dari file terpisah
-# Pastikan file helpers.py dan constants.py ada di folder yang sama
-from helpers import (
-    fmt_money, fmt_pct, beautify, proj, realval, cagr,
-    fetch_usd_idr, fetch_crypto_usd, fetch_yahoo_last_price
-)
-from constants import (
-    pajak, rate_default, cg_ids_map, crypto_ratios
-)
+# ============== KODE DARI constants.py ==============
+pajak = {
+    "Tanah": 0.0,
+    "Emas": 0.0,
+    "Crypto": 0.0,
+    "Saham": 0.0,
+    "ETF": 0.0,
+    "Obligasi": 0.0,
+    "Deposito": 0.0,
+    "Reksadana Pasar Uang": 0.0,
+    "Reksadana Pendapatan Tetap": 0.0,
+    "Reksadana Saham": 0.0,
+    "Reksadana Campuran": 0.0,
+}
+
+rate_default = {
+    "Tanah-Jakarta": 0.08,
+    "Tanah-Bandung": 0.08,
+    "Tanah-Karawang": 0.075,
+    "Tanah-Cikarang": 0.075,
+    "Tanah-Bekasi": 0.075,
+    "Tanah-Tangerang": 0.075,
+    "Tanah-Custom": 0.07,
+    "Emas": 0.07,
+    "Crypto-BTC": 0.20,
+    "Crypto-ETH": 0.15,
+    "Crypto-SOL": 0.18,
+    "Crypto-XRP": 0.1,
+    "Crypto-BNB": 0.12,
+    "Saham-BBCA": 0.1,
+    "Saham-BMRI": 0.11,
+    "Saham-BBRI": 0.1,
+    "Saham-AAPL": 0.15,
+    "ETF-SPY": 0.1,
+    "ETF-QQQ": 0.12,
+    "Obligasi": 0.07,
+    "Deposito": 0.035,
+    "Reksadana Pasar Uang": 0.045,
+    "Reksadana Pendapatan Tetap": 0.065,
+    "Reksadana Saham": 0.1,
+    "Reksadana Campuran": 0.08
+}
+
+cg_ids_map = {
+    "Crypto-BTC": "bitcoin",
+    "Crypto-ETH": "ethereum",
+    "Crypto-SOL": "solana",
+    "Crypto-XRP": "ripple",
+    "Crypto-BNB": "binancecoin"
+}
+
+crypto_ratios = {
+    "Crypto-ETH": 0.9,
+    "Crypto-SOL": 0.95,
+    "Crypto-XRP": 0.8,
+    "Crypto-BNB": 0.85
+}
+
+# ============== KODE DARI helpers.py ==============
+def fmt_money(value):
+    return f"Rp{value:,.0f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+def fmt_pct(value):
+    return f"{value*100:,.2f}%".replace(",", "X").replace(".", ",").replace("X", ".")
+
+def beautify(df):
+    def format_row(row):
+        for col in df.columns:
+            if "Rp" in col or "Nilai" in col or "Real" in col:
+                row[col] = fmt_money(row[col])
+            elif "%" in col or "Rate" in col:
+                row[col] = f"{row[col]:,.2f}%"
+        return row
+    return df.apply(format_row, axis=1)
+
+def proj(h0, r, t):
+    return h0 * ((1 + r) ** t)
+
+def realval(h, t, inf):
+    return h / ((1 + inf) ** t)
+
+def cagr(h0, h_end, t):
+    if h0 == 0: return 0
+    if h_end < 0: return -1
+    return (h_end/h0)**(1/t) - 1 if t > 0 else 0
+
+def fetch_usd_idr():
+    try:
+        response = requests.get("https://api.exchangerate-api.com/v4/latest/USD")
+        data = response.json()
+        if "rates" in data and "IDR" in data["rates"]:
+            return data["rates"]["IDR"], "Exchangerate-API"
+    except Exception as e:
+        st.error(f"Gagal mengambil kurs USD/IDR: {e}")
+    return None, None
+
+def fetch_crypto_usd(ids):
+    try:
+        ids_str = ",".join(ids)
+        response = requests.get(f"https://api.coingecko.com/api/v3/simple/price?ids={ids_str}&vs_currencies=usd")
+        data = response.json()
+        prices = {k: v['usd'] for k, v in data.items() if 'usd' in v}
+        return prices, "CoinGecko"
+    except Exception as e:
+        st.error(f"Gagal mengambil harga crypto: {e}")
+    return {}, None
+
+def fetch_yahoo_last_price(ticker):
+    try:
+        data = yf.download(ticker, period="1d", interval="1m")
+        if not data.empty:
+            return data['Close'].iloc[-1], "Yahoo Finance"
+    except Exception as e:
+        st.error(f"Gagal mengambil harga saham/ETF: {e}")
+    return None, None
+
+# ============== KODE UTAMA app.py (dengan semua perbaikan) ==============
 
 # Konfigurasi halaman Streamlit agar lebih responsif
 st.set_page_config(
@@ -142,34 +248,28 @@ div[data-baseweb="select"] > div,
     border: 1px solid #ccc !important;
 }
 
-/* Target dropdown yang melayang pada desktop */
-.st-emotion-cache-1r65j0p, .st-emotion-cache-1y5w0a6 {
-    background-color: #e6f7ff !important; /* Biru muda */
-}
-.st-emotion-cache-1y5w0a6 li:hover {
-    background-color: #d8eaff !important; /* Biru muda sedikit lebih gelap saat hover */
-}
-
-/* Target dropdown yang melayang pada mobile */
+/* Target dropdown yang melayang pada desktop dan mobile */
 div[data-baseweb="popover"] > div > div {
     background-color: #e6f7ff !important; /* Biru muda */
     color: #333333 !important;
     border: 1px solid #ccc !important;
     border-radius: 5px !important;
 }
-/* Latar belakang setiap opsi individu dalam dropdown */
+div[role="listbox"] {
+    background-color: #e6f7ff !important; /* Biru muda */
+}
 div[role="option"] {
     background-color: #e6f7ff !important; /* Biru muda */
     color: #333333 !important;
 }
 div[role="option"]:hover {
-    background-color: #d8eaff !important; /* Biru muda sedikit lebih gelap saat hover */
-}
-/* Pastikan teks di dalam opsi juga benar */
-div[role="option"] > div > span {
-    color: #333333 !important;
+    background-color: #d8eaff !important;
 }
 
+/* Latar belakang listbox pada PC, target lebih agresif */
+.st-emotion-cache-10q2x7r {
+    background-color: #e6f7ff !important;
+}
 
 /* Warna teks di dalam list dropdown */
 .st-emotion-cache-10q2x7r p {
@@ -245,6 +345,7 @@ div[role="option"] > div > span {
 }
 </style>
 """, unsafe_allow_html=True)
+
 # ==================== Main Streamlit App ====================
 
 st.title("📊 Kalkulator Proyeksi Investasi Multi-Aset")
@@ -609,8 +710,8 @@ with tab3:
         "Urutan investasi dari risiko rendah ke tinggi?": "Secara umum, urutan investasi dari risiko rendah ke tinggi adalah: **Deposito** → **Reksadana Pasar Uang** → **Obligasi Pemerintah** → **Reksadana Pendapatan Tetap** → **Emas** → **Properti** → **Reksadana Campuran** → **Reksadana Saham** → **Saham** → **Crypto**.",
         "Berapa dana darurat yang ideal?": "Dana darurat yang ideal adalah dana yang bisa menutupi biaya hidup Anda selama **3 hingga 6 bulan**, atau bahkan lebih, tergantung pekerjaan dan tanggungan Anda. Dana ini harus disimpan di instrumen yang mudah dicairkan seperti tabungan atau reksadana pasar uang.",
         "Kenapa investasi saham berisiko?": "Investasi saham berisiko karena nilainya bisa berfluktuasi tajam. Performa perusahaan, kondisi ekonomi, dan sentimen pasar dapat memengaruhi harga saham, yang bisa menyebabkan kerugian jika Anda menjual saat harga sedang turun.",
-        "Apakah berinvestasi di crypto itu aman?": "Berinvestasi di crypto memiliki risiko yang sangat tinggi karena harganya sangat fluktuatif. Keuntungannya bisa sangat besar, tetapi potensi kerugiannya juga tinggi. Investasi ini cocok untuk investor dengan profil risiko tinggi.",
-        "Apa itu diversifikasi?": "Diversifikasi adalah strategi mengalokasikan investasi ke berbagai jenis aset untuk mengurangi risiko. Tujuannya adalah agar kerugian di satu aset dapat diimbangi oleh keuntungan di aset lain."
+        "Apa itu diversifikasi?": "Diversifikasi adalah strategi mengalokasikan investasi ke berbagai jenis aset untuk mengurangi risiko. Tujuannya adalah agar kerugian di satu aset dapat diimbangi oleh keuntungan di aset lain.",
+        "Apakah berinvestasi di crypto itu aman?": "Berinvestasi di crypto memiliki risiko yang sangat tinggi karena harganya sangat fluktuatif. Keuntungannya bisa sangat besar, tetapi potensi kerugiannya juga tinggi. Investasi ini cocok untuk investor dengan profil risiko tinggi."
     }
 
     # Tampilkan tombol-tombol pertanyaan
@@ -638,6 +739,3 @@ with tab3:
     st.markdown("[Klik di sini untuk mengakses Google Gemini](https://gemini.google.com/app)", unsafe_allow_html=True)
     st.markdown("[Klik di sini untuk mengakses IBM Granite Playground](https://www.ibm.com/granite/playground/)", unsafe_allow_html=True)
     st.info("*(Tautan ini akan membuka halaman AI di tab baru. Anda bisa bertanya apa saja, termasuk topik investasi.)*")
-
-
-

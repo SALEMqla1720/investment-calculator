@@ -116,11 +116,12 @@ def fetch_crypto_usd(ids):
 
 def fetch_yahoo_last_price(ticker):
     try:
-        data = yf.download(ticker, period="1d", interval="1m")
+        # Menggunakan periode 1d dan interval 1m untuk mendapatkan harga terakhir
+        data = yf.download(ticker, period="1d", interval="1m", progress=False, show_errors=False)
         if not data.empty:
             return data['Close'].iloc[-1], "Yahoo Finance"
     except Exception as e:
-        st.error(f"Gagal mengambil harga saham/ETF: {e}")
+        st.error(f"Gagal mengambil harga saham/ETF untuk ticker {ticker}: {e}")
     return None, None
 
 # ============== KODE UTAMA app.py (dengan semua perbaikan) ==============
@@ -519,7 +520,8 @@ with tab1:
                 
                 yahoo_link = f"https://finance.yahoo.com/quote/{ticker}"
                 
-                if not h:
+                if h is None:
+                    st.warning(f"Gagal mendapatkan harga otomatis untuk {label}. Masukkan harga manual.")
                     h_idr = st.number_input("Harga per unit (Rp)", key=f"stock_price_{label}", value=1000, format="%d")
                 else:
                     h_idr = h * (usd_idr if "AAPL" in label else 1)
@@ -540,7 +542,8 @@ with tab1:
 
                 yahoo_link = f"https://finance.yahoo.com/quote/{ticker}"
 
-                if not h:
+                if h is None:
+                    st.warning(f"Gagal mendapatkan harga otomatis untuk {label}. Masukkan harga manual.")
                     h_idr = st.number_input("Harga per unit (Rp)", key=f"etf_price_{label}", value=1000, format="%d")
                 else:
                     h_idr = h * usd_idr
